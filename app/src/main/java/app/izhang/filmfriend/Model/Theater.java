@@ -6,4 +6,10 @@ package app.izhang.filmfriend.Model;
  */
 
 public class Theater {
+    private String name;
+    private String address;
+    private String number;
+    private String url;
+    private int id;
+    
 }
