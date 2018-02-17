@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.GroupFragment.OnListFragmentInteractionListener;
 import app.izhang.filmfriend.View.dummy.DummyContent.DummyItem;
 

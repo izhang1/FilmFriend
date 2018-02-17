@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import app.izhang.filmfriend.R;
+
 public class HomeView extends AppCompatActivity {
 
     private TextView mTextMessage;
