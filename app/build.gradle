@@ -16,6 +16,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // TODO: Change the API key to your own via the gradle.properties
+    // Ref: https://stackoverflow.com/questions/33134031/is-there-a-safe-way-to-manage-api-keys/34021467#34021467
+    buildTypes.each {
+        it.buildConfigField 'String', 'MOVIE_DB_KEY', MyTheMovieDBApiToken
+    }
 }
 
 dependencies {
@@ -31,6 +37,8 @@ dependencies {
     implementation 'com.android.support:support-v4:27.0.0'
     implementation 'com.android.support:recyclerview-v7:27.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
     compile 'com.google.code.gson:gson:2.8.2'
     implementation 'com.jakewharton.timber:timber:4.6.1'
 
