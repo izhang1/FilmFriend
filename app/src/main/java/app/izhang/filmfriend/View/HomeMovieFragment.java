@@ -7,8 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import java.util.List;
+
+import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.Util.NetworkUtil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,7 +25,7 @@ import app.izhang.filmfriend.R;
  * Use the {@link HomeMovieFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeMovieFragment extends Fragment {
+public class HomeMovieFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,7 +71,19 @@ public class HomeMovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_movie, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_movie, container, false);
+
+        Button testBtn = view.findViewById(R.id.testBtn);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NetworkUtil networkUtil = new NetworkUtil();
+                networkUtil.testCallMovieAPI();
+            }
+        });
+
+        return view;
     }
+
 
 }
