@@ -1,16 +1,10 @@
 package app.izhang.filmfriend.Util;
 
-import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.google.gson.Gson;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import app.izhang.filmfriend.BuildConfig;
 import app.izhang.filmfriend.Model.Movie;
@@ -26,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkUtil{
 
-    private static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
+    private static final String BASE_URL = "http://api.themoviedb.org/3/";
 
     private static final String MOVIE_DB_KEY = BuildConfig.MOVIE_DB_KEY;
 
@@ -54,6 +48,91 @@ public class NetworkUtil{
 
             @Override
             public void onFailure(Call<MovieJsonResponse> call, Throwable t) {
+                Log.d("Error",t.getMessage());
+            }
+        });
+    }
+
+    public void testCallPopularMovieList(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TheMovieDBService service = retrofit.create(TheMovieDBService.class);
+        Call<MovieJsonResponse> moviesCall = service.popularMovieList(MOVIE_DB_KEY, 1);
+        moviesCall.enqueue(new Callback<MovieJsonResponse>() {
+            @Override
+            public void onResponse(Call<MovieJsonResponse> call, Response<MovieJsonResponse> response) {
+                if(response.isSuccessful()) {
+                    MovieJsonResponse jsonResponse = response.body();
+                    ArrayList<Movie> movies = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
+                    for(Movie m : movies){
+                        System.out.println(m.toString());
+                    }
+                }else{
+                    System.err.println(response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieJsonResponse> call, Throwable t) {
+                Log.d("Error",t.getMessage());
+            }
+        });
+    }
+
+    public void testSearchMovie(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TheMovieDBService service = retrofit.create(TheMovieDBService.class);
+        Call<MovieJsonResponse> moviesCall = service.searchMovie(MOVIE_DB_KEY, "black panther");
+        moviesCall.enqueue(new Callback<MovieJsonResponse>() {
+            @Override
+            public void onResponse(Call<MovieJsonResponse> call, Response<MovieJsonResponse> response) {
+                if(response.isSuccessful()) {
+                    MovieJsonResponse jsonResponse = response.body();
+                    ArrayList<Movie> movies = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
+                    for(Movie m : movies){
+                        System.out.println(m.toString());
+                    }
+                }else{
+                    System.err.println(response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieJsonResponse> call, Throwable t) {
+                Log.d("Error",t.getMessage());
+            }
+        });
+    }
+
+    // Movie ID: 284054 - Black Panther 2018 Version
+    public void testGetMovieId(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TheMovieDBService service = retrofit.create(TheMovieDBService.class);
+        Call<Movie> moviesCall = service.getMovieDetails("284054", MOVIE_DB_KEY);
+        moviesCall.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if(response.isSuccessful()) {
+                    Movie movie = response.body();
+                    System.out.println(movie);
+                }else{
+                    System.err.println(response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
                 Log.d("Error",t.getMessage());
             }
         });

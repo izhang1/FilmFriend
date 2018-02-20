@@ -1,10 +1,9 @@
 package app.izhang.filmfriend.Util;
 
-import java.util.List;
-
 import app.izhang.filmfriend.Model.Movie;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -14,10 +13,18 @@ import retrofit2.http.Query;
 public interface TheMovieDBService {
 
     // http://api.themoviedb.org/3/movie/popular?api_key=[key]
-    @GET("top_rated")
+    //http://api.themoviedb.org/3/search/movie?api_key=6b686c328bd2f8bb5a4fd7e4d526bce6&query=blackpanther
+    @GET("movie/top_rated")
     Call<MovieJsonResponse> topRatedMovieList(@Query("api_key") String key, @Query("page") int pageNum);
 
-    @GET("popular")
-    Call<List<Movie>> popularMovieList();
+    @GET("movie/popular")
+    Call<MovieJsonResponse> popularMovieList(@Query("api_key") String key, @Query("page") int pageNum);
+
+    @GET("search/movie")
+    Call<MovieJsonResponse> searchMovie(@Query("api_key") String key, @Query("query") String query);
+
+    @GET("movie/{movie_id}")
+    Call<Movie> getMovieDetails(@Path("movie_id") String movieId, @Query("api_key") String key);
+
 
 }

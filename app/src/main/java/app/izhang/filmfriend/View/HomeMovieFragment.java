@@ -78,7 +78,7 @@ public class HomeMovieFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 NetworkUtil networkUtil = new NetworkUtil();
-                networkUtil.testCallMovieAPI();
+                networkUtil.testGetMovieId();
             }
         });
 
