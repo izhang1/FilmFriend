@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 public interface TheMovieDBService {
 
     // http://api.themoviedb.org/3/movie/popular?api_key=[key]
-    //http://api.themoviedb.org/3/search/movie?api_key=6b686c328bd2f8bb5a4fd7e4d526bce6&query=blackpanther
+    // http://api.themoviedb.org/3/search/movie?api_key=6b686c328bd2f8bb5a4fd7e4d526bce6&query=blackpanther
     @GET("movie/top_rated")
     Call<MovieJsonResponse> topRatedMovieList(@Query("api_key") String key, @Query("page") int pageNum);
 
