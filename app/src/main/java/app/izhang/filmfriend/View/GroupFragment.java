@@ -11,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.dummy.DummyContent;
-import app.izhang.filmfriend.View.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

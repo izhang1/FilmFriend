@@ -1,4 +1,4 @@
-package app.izhang.filmfriend.View;
+package app.izhang.filmfriend.View.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.View.GroupDetailView;
 import app.izhang.filmfriend.View.dummy.DummyContent.DummyItem;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView =  view.findViewById(R.id.tv_group_name);
+            mIdView =  view.findViewById(R.id.tv_movie_title);
             mContentView = view.findViewById(R.id.tv_group_lastmsg);
             view.setOnClickListener(this);
         }

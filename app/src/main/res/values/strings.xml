@@ -28,6 +28,9 @@
     <!-- Strings for UI placeholder texts -->
     <string name="group_title_placeholder">Group Title</string>
     <string name="group_message_placeholder">Group message. Testing group message.</string>
+    <string name="movie_title_placeholder">Movie Title</string>
+    <string name="movie_description_placeholder">Movie description. Information about the movie and more.</string>
+    <string name="movie_rating_placeholder">Rated: 99%</string>
 
 
 </resources>

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,9 @@ import java.util.List;
 import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.NetworkUtil;
+import app.izhang.filmfriend.View.Adapter.HomeMovieViewAdapter;
+import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
+import app.izhang.filmfriend.View.dummy.DummyContent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,15 +79,14 @@ public class HomeMovieFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_movie, container, false);
 
-        Button testBtn = view.findViewById(R.id.testBtn);
-        testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NetworkUtil networkUtil = new NetworkUtil();
-                networkUtil.testGetMovieId();
-            }
-        });
-
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            // Todo: Change the null value to the actual list data
+            recyclerView.setAdapter(new HomeMovieViewAdapter(getContext(), null));
+        }
         return view;
     }
 
