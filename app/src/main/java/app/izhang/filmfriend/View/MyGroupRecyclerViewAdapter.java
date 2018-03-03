@@ -1,5 +1,7 @@
 package app.izhang.filmfriend.View;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +20,10 @@ import java.util.List;
 public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecyclerViewAdapter.ViewHolder> {
 
     private final List<DummyItem> mValues;
+    private final Context mContext;
 
-    public MyGroupRecyclerViewAdapter(List<DummyItem> items) {
+    public MyGroupRecyclerViewAdapter(Context context, List<DummyItem> items) {
+        mContext = context;
         mValues = items;
     }
 
@@ -44,7 +48,7 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
@@ -55,11 +59,18 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
             mView = view;
             mIdView =  view.findViewById(R.id.tv_group_name);
             mContentView = view.findViewById(R.id.tv_group_lastmsg);
+            view.setOnClickListener(this);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent testGroupIntent = new Intent(mContext, GroupDetailView.class);
+            mContext.startActivity(testGroupIntent);
         }
     }
 }

@@ -7,6 +7,7 @@ import app.izhang.filmfriend.R;
 
 public class GroupDetailView extends AppCompatActivity {
 
+    // https://github.com/timigod/android-chat-ui
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

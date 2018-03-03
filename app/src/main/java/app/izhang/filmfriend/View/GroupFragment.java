@@ -69,7 +69,7 @@ public class GroupFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             // Todo: Make listener null
-            recyclerView.setAdapter(new MyGroupRecyclerViewAdapter(DummyContent.ITEMS));
+            recyclerView.setAdapter(new MyGroupRecyclerViewAdapter(getContext(), DummyContent.ITEMS));
         }
         return view;
     }
