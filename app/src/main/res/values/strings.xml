@@ -24,4 +24,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Strings for UI placeholder texts -->
+    <string name="group_title_placeholder">Group Title</string>
+    <string name="group_message_placeholder">Group message. Testing group message.</string>
+
+
 </resources>
