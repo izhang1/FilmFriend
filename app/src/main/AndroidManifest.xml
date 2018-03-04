@@ -29,7 +29,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".View.MovieDetailView" />
+        <activity android:name=".View.MovieDetailView"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".View.GroupDetailView"></activity>
     </application>
