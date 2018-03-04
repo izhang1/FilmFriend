@@ -4,11 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+import app.izhang.filmfriend.Model.Group;
+import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.View.Adapter.HomeMovieViewAdapter;
+import app.izhang.filmfriend.View.Adapter.SavedViewAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,7 +73,32 @@ public class SavedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved, container, false);
+        View view = inflater.inflate(R.layout.fragment_saved, container, false);
+
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            // Todo: Change the null value to the actual list data
+            recyclerView.setAdapter(new SavedViewAdapter(getContext(), getDummyData()));
+        }
+
+        return view;
+    }
+
+    // TODO: 3/4/18 Remove this after confirming the data shows
+    public ArrayList getDummyData(){
+        ArrayList list = new ArrayList();
+        Group group1 = new Group("Title 1", null, "Ivan", "1");
+        Group group2 = new Group("Title 2", null, "Ivan", "2");
+        Movie movie = new Movie("Test", "Test","Test","Test","Test", 12,"Test");
+
+        list.add(group1);
+        list.add(group2);
+        list.add(movie);
+
+        return list;
     }
 
 

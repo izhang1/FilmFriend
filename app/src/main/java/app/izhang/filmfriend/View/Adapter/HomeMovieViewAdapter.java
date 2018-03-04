@@ -48,7 +48,7 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
         else return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public final TextView mMovieTitle;
         public final TextView mMovieDescription;

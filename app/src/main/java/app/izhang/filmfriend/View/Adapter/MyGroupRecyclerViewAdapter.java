@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.GroupDetailView;
 import app.izhang.filmfriend.View.dummy.DummyContent.DummyItem;
@@ -20,10 +21,10 @@ import java.util.List;
  */
 public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Group> mValues;
     private final Context mContext;
 
-    public MyGroupRecyclerViewAdapter(Context context, List<DummyItem> items) {
+    public MyGroupRecyclerViewAdapter(Context context, List<Group> items) {
         mContext = context;
         mValues = items;
     }
@@ -32,46 +33,45 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.group_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mContext);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-
-
+        holder.mGroup = mValues.get(position);
+        holder.mGroupTitle.setText(mValues.get(position).getTitle());
+        holder.mGroupLastMessage.setText(mValues.get(position).getOwner());
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if(mValues != null){
+            return mValues.size();
+        }else{
+            return 0;
+        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mGroupTitle;
+        public final TextView mGroupLastMessage;
+        private final Context vhContext;
+        public Group mGroup;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view,Context context){
             super(view);
             mView = view;
-            mIdView =  view.findViewById(R.id.tv_movie_title);
-            mContentView = view.findViewById(R.id.tv_group_lastmsg);
+            mGroupTitle =  view.findViewById(R.id.tv_movie_title);
+            mGroupLastMessage = view.findViewById(R.id.tv_group_lastmsg);
+            vhContext = context;
             view.setOnClickListener(this);
         }
 
         @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
-
-        @Override
         public void onClick(View view) {
-            Intent testGroupIntent = new Intent(mContext, GroupDetailView.class);
-            mContext.startActivity(testGroupIntent);
+            Intent testGroupIntent = new Intent(vhContext, GroupDetailView.class);
+            vhContext.startActivity(testGroupIntent);
         }
     }
 }

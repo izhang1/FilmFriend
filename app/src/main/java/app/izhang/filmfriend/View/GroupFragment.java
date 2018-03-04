@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
+import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.dummy.DummyContent;
@@ -67,10 +70,23 @@ public class GroupFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             // Todo: Make listener null
-            recyclerView.setAdapter(new MyGroupRecyclerViewAdapter(getContext(), DummyContent.ITEMS));
+            recyclerView.setAdapter(new MyGroupRecyclerViewAdapter(getContext(), getDummyData()));
         }
         return view;
     }
+
+    // TODO: 3/4/18 Remove this after confirming the data shows
+    public ArrayList getDummyData(){
+        ArrayList list = new ArrayList();
+        Group group1 = new Group("Title 1", null, "Ivan", "1");
+        Group group2 = new Group("Title 2", null, "Ivan", "2");
+
+        list.add(group1);
+        list.add(group2);
+
+        return list;
+    }
+
 
 
 
