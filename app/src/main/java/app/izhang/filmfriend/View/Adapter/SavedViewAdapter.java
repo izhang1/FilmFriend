@@ -35,7 +35,7 @@ public class SavedViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             default:
                 View movieItemView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.movie_item, parent, false);
-                return new HomeMovieViewAdapter.ViewHolder(movieItemView);
+                return new HomeMovieViewAdapter.ViewHolder(movieItemView, mContext);
         }
     }
 

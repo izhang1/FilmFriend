@@ -1,6 +1,7 @@
 package app.izhang.filmfriend.View.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.View.MovieDetailView;
 
 
 /**
@@ -31,7 +33,7 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
     public HomeMovieViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item, parent, false);
-        return new HomeMovieViewAdapter.ViewHolder(view);
+        return new HomeMovieViewAdapter.ViewHolder(view, mContext);
     }
 
     @Override
@@ -53,13 +55,15 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
         public final TextView mMovieTitle;
         public final TextView mMovieDescription;
         public final ImageView mMoviePoster;
+        private final Context vhContext;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, Context context) {
             super(view);
             mView = view;
             mMovieTitle =  view.findViewById(R.id.tv_movie_title);
             mMovieDescription = view.findViewById(R.id.tv_group_lastmsg);
             mMoviePoster = view.findViewById(R.id.iv_movie_poster);
+            vhContext = context;
             view.setOnClickListener(this);
         }
 
@@ -70,9 +74,9 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
 
         @Override
         public void onClick(View view) {
-            // todo: Change this to go to the movie detail screen
-            // Intent testGroupIntent = new Intent(mContext, GroupDetailView.class);
-            // mContext.startActivity(testGroupIntent);
+            // todo: Change this to go to the movie detail screen and pass in associated movie
+            Intent testMovieDetailIntent = new Intent(vhContext, MovieDetailView.class);
+            vhContext.startActivity(testMovieDetailIntent);
         }
     }
 }
