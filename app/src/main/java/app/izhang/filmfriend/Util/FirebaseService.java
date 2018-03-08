@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.Model.Message;
+import app.izhang.filmfriend.Presenter.LoginPresenter;
 
 import static android.content.ContentValues.TAG;
 
@@ -38,7 +39,7 @@ public class FirebaseService {
      * Login method to authenticate with Firebase Auth using an email and password.
      * -
      */
-    private void login(String email, String password, final Context context){
+    public void login(String email, String password, final Context context, final LoginPresenter loginPresenter){
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -48,11 +49,12 @@ public class FirebaseService {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            loginPresenter.onResult(true);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(context, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            loginPresenter.onResult(false);
+
                         }
                     }
                 });
@@ -61,63 +63,63 @@ public class FirebaseService {
     /**
      * Create Account method. Creates a new account with the email and password. Utilizes the UUID returned from Firebase to create a new entry with the username
      */
-    private void createAccount(String email, String username, String password){}
+    public void createAccount(String email, String username, String password){}
 
     /**
      * Create Group method. Creates a new group entry in the Firebase realtime database system.
      */
-    private void createGroup(Group group){}
+    public void createGroup(Group group){}
 
     /**
      * Search Group method. Returns a list of Groups with the search term.
      */
-    private void searchGroup(String searchTerm){}
+    public void searchGroup(String searchTerm){}
 
     /**
      * Delete Group method. Deletes the group ID from Firebase.
      */
-    private void deleteGroup(String groupId){}
+    public void deleteGroup(String groupId){}
 
     /**
      * Add Message method. Adds a new method to the group.
      */
-    private void addMessage(Message newMessage){}
+    public void addMessage(Message newMessage){}
 
     /**
      * Remove Message method. Removes a message from the group.
      */
-    private void removeMessage(Message message){}
+    public void removeMessage(Message message){}
 
     /**
      * Edit Message method. Replaces the message in group with new message.
      * @param message
      */
-    private void editMessage(Message message){}
+    public void editMessage(Message message){}
 
     /**
      * Save Group method. Saves the group ID into the users account on Firebase.
      * @param groupId
      * @param accountId
      */
-    private void saveGroupToAccount(String groupId, String accountId){}
+    public void saveGroupToAccount(String groupId, String accountId){}
 
     /**
      * Save Movie method. Saves the movie ID into the users account on Firebase.
      * @param movieId
      * @param accountId
      */
-    private void saveMovieToAccount(String movieId, String accountId){}
+    public void saveMovieToAccount(String movieId, String accountId){}
 
     /**
      * Get Saved Ids from account method. Returns a list of IDs representing Groups and Movies that were saved.
      * @param accountId
      */
-    private void getSavedIdsFromAccount(String accountId){}
+    public void getSavedIdsFromAccount(String accountId){}
 
     /**
      * Get Group method. Returns Group information based on groupId
      * @param groupId
      */
-    private void getGroup(String groupId){}
+    public void getGroup(String groupId){}
 
 }
