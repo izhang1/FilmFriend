@@ -1,7 +1,20 @@
 package app.izhang.filmfriend.Util;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.Model.Message;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by ivanzhang on 2/28/18.
@@ -13,11 +26,37 @@ public class FirebaseService {
     private final String FB_ACCT = "https://filmfriend-17f16.firebaseio.com/acct";
     private final String FB_GROUP = "https://filmfriend-17f16.firebaseio.com/group";
 
+    private static FirebaseService instance = new FirebaseService();
+    private FirebaseAuth mAuth;
+
+    //Get the only object available
+    public static FirebaseService getInstance(){
+        return instance;
+    }
 
     /**
      * Login method to authenticate with Firebase Auth using an email and password.
+     * -
      */
-    private void login(String email, String password){}
+    private void login(String email, String password, final Context context){
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(context, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
     /**
      * Create Account method. Creates a new account with the email and password. Utilizes the UUID returned from Firebase to create a new entry with the username
