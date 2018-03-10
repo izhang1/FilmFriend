@@ -14,7 +14,6 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +35,7 @@ import java.util.List;
 
 import app.izhang.filmfriend.Presenter.LoginPresenter;
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.View.Base.BaseLoginView;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -287,8 +287,14 @@ public class LoginView extends AppCompatActivity implements LoaderCallbacks<Curs
     }
 
     @Override
-    public void requestLogin(String username, String password) {
-        mLoginPresenter.loginUser(username, password);
+    public void requestLogin(String email, String password) {
+        mLoginPresenter.loginUser(email, password);
+    }
+
+    // Not needed
+    @Override
+    public void registerUser(String username, String email, String password) {
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-package app.izhang.filmfriend.View;
+package app.izhang.filmfriend.View.Base;
 
 
 /**
@@ -8,7 +8,9 @@ package app.izhang.filmfriend.View;
 public interface BaseLoginView {
     void showLoadingState(boolean visible);
 
-    void requestLogin(String username, String password);
+    void requestLogin(String email, String password);
+
+    void registerUser(String username, String email, String password);
 
     void onSuccess();
 

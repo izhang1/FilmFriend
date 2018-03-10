@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.View.Base.BaseLoginView;
 
-public class RegisterView extends AppCompatActivity {
+public class RegisterView extends AppCompatActivity implements BaseLoginView {
 
     // UI references
     private TextView mLoginTextBtn;
@@ -27,5 +28,31 @@ public class RegisterView extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void showLoadingState(boolean visible) {
+
+    }
+
+    // Not needed for this
+    @Override
+    public void requestLogin(String username, String password) {
+
+    }
+
+    @Override
+    public void registerUser(String username, String email, String password) {
+
+    }
+
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onFailure() {
+
     }
 }

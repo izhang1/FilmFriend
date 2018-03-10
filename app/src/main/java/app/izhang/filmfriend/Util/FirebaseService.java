@@ -1,6 +1,7 @@
 package app.izhang.filmfriend.Util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.Model.Message;
 import app.izhang.filmfriend.Presenter.LoginPresenter;
+import app.izhang.filmfriend.Presenter.RegisterPresenter;
 
 import static android.content.ContentValues.TAG;
 
@@ -41,6 +43,26 @@ public class FirebaseService {
      */
     public void login(String email, String password, final Context context, final LoginPresenter loginPresenter){
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    loginPresenter.onResult(true);
+                }else{
+                    loginPresenter.onResult(false);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * Create Account method. Creates a new account with the email and password. Utilizes the UUID returned from Firebase to create a new entry with the username
+     */
+    public void createAccount(String email, String password, final RegisterPresenter registerPresenter){
+        mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -49,21 +71,17 @@ public class FirebaseService {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            loginPresenter.onResult(true);
+                            registerPresenter.onResult(true);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            loginPresenter.onResult(false);
+                            registerPresenter.onResult(false);
 
                         }
                     }
                 });
-    }
 
-    /**
-     * Create Account method. Creates a new account with the email and password. Utilizes the UUID returned from Firebase to create a new entry with the username
-     */
-    public void createAccount(String email, String username, String password){}
+    }
 
     /**
      * Create Group method. Creates a new group entry in the Firebase realtime database system.
@@ -81,7 +99,7 @@ public class FirebaseService {
     public void deleteGroup(String groupId){}
 
     /**
-     * Add Message method. Adds a new method to the group.
+     * Add Message method. Adds a new message to the group.
      */
     public void addMessage(Message newMessage){}
 
