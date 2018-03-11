@@ -11,9 +11,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.Model.Message;
+import app.izhang.filmfriend.Presenter.GroupPresenter;
 import app.izhang.filmfriend.Presenter.LoginPresenter;
 import app.izhang.filmfriend.Presenter.RegisterPresenter;
 
@@ -25,11 +35,20 @@ import static android.content.ContentValues.TAG;
 
 public class FirebaseService {
 
-    private final String FB_BASE = "https://filmfriend-17f16.firebaseio.com/";
-    private final String FB_ACCT = "https://filmfriend-17f16.firebaseio.com/acct";
-    private final String FB_GROUP = "https://filmfriend-17f16.firebaseio.com/group";
+    private final String FB_ACCT = "ACCOUNT";
+    private final String FB_GROUP = "GROUP";
+    private final String FB_SAVED = "SAVED";
 
+    private final String GROUP_TITLE = "title";
+    private final String GROUP_MESSAGE = "message";
+    private final String GROUP_ID = "groupId";
+
+    private final String MOVIE_ID = "movieId";
+
+    // Authentication and service
     private static FirebaseService instance = new FirebaseService();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
     private FirebaseAuth mAuth;
 
     //Get the only object available
@@ -86,58 +105,171 @@ public class FirebaseService {
     /**
      * Create Group method. Creates a new group entry in the Firebase realtime database system.
      */
-    public void createGroup(Group group){}
+    public boolean createGroup(Group group){
+        DatabaseReference groupRef = database.getReference(FB_GROUP);
+        Task createGroupResult = groupRef.setValue(group);
+        if(createGroupResult.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     /**
      * Search Group method. Returns a list of Groups with the search term.
      */
-    public void searchGroup(String searchTerm){}
+    public void searchGroup(final String searchTerm, final GroupPresenter groupPresenter){
+        DatabaseReference groupRef = database.getReference(FB_GROUP);
+        groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator groupIter = dataSnapshot.getChildren().iterator();
+                ArrayList<Group> groupList = new ArrayList<>();
+                while (groupIter.hasNext()){
+                    DataSnapshot group = (DataSnapshot) groupIter.next();
+                    if(group.child(GROUP_TITLE).getKey().contains(searchTerm)){
+                        Group temp = (Group) group.getValue();
+                        groupList.add(temp);
+                    }
+                }
+                groupPresenter.searchDataSuccess(groupList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                groupPresenter.searchDataFailure(databaseError.getDetails());
+            }
+        });
+    }
 
     /**
      * Delete Group method. Deletes the group ID from Firebase.
      */
-    public void deleteGroup(String groupId){}
+    public boolean deleteGroup(String groupId){
+        DatabaseReference groupRef = database.getReference(FB_GROUP);
+        Task result = groupRef.child(groupId).removeValue();
+        if(result.isSuccessful()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     /**
      * Add Message method. Adds a new message to the group.
      */
-    public void addMessage(Message newMessage){}
+    public void addMessage(final Message newMessage){
+        final DatabaseReference groupRef = database.getReference(FB_GROUP);
+        groupRef.child(newMessage.getGroupId())
+                .child(GROUP_MESSAGE)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()){
+                    long messageCount = dataSnapshot.getChildrenCount() + 1;
+                    groupRef.child(newMessage.getGroupId()).child(Long.toString(messageCount)).setValue(newMessage);
+                }else{
+                    groupRef.child(newMessage.getGroupId()).child("1").setValue(newMessage);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     /**
      * Remove Message method. Removes a message from the group.
      */
-    public void removeMessage(Message message){}
+    public void removeMessage(Message message){
+
+    }
 
     /**
      * Edit Message method. Replaces the message in group with new message.
      * @param message
      */
-    public void editMessage(Message message){}
+    public void editMessage(Message message){
+
+    }
 
     /**
      * Save Group method. Saves the group ID into the users account on Firebase.
      * @param groupId
      * @param accountId
      */
-    public void saveGroupToAccount(String groupId, String accountId){}
+    public void saveGroupToAccount(String groupId, String accountId){
+        final DatabaseReference groupRef = database.getReference(FB_GROUP);
+        groupRef.child(FB_ACCT)
+                .child(accountId)
+                .child(FB_SAVED)
+                .child(groupId)
+                .setValue(GROUP_ID);
+    }
 
     /**
      * Save Movie method. Saves the movie ID into the users account on Firebase.
      * @param movieId
      * @param accountId
      */
-    public void saveMovieToAccount(String movieId, String accountId){}
+    public void saveMovieToAccount(String movieId, String accountId){
+        final DatabaseReference groupRef = database.getReference(FB_GROUP);
+        groupRef.child(FB_ACCT)
+                .child(accountId)
+                .child(FB_SAVED)
+                .child(movieId)
+                .setValue(MOVIE_ID);
+    }
 
     /**
      * Get Saved Ids from account method. Returns a list of IDs representing Groups and Movies that were saved.
      * @param accountId
+     * todo : Need to consider the interaction as the IDs are being retrieved
      */
-    public void getSavedIdsFromAccount(String accountId){}
+    public void getSavedIdsFromAccount(String accountId){
+        final DatabaseReference groupRef = database.getReference(FB_GROUP);
+        groupRef.child(FB_ACCT)
+                .child(accountId)
+                .child(FB_SAVED)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, String> savedIdandType = new HashMap<>();
+                        Iterator savedIdIterator = dataSnapshot.getChildren().iterator();
+
+                        while(savedIdIterator.hasNext()){
+                            DataSnapshot savedId = (DataSnapshot) savedIdIterator.next();
+                            savedIdandType.put(savedId.getKey(), savedId.getValue().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
 
     /**
      * Get Group method. Returns Group information based on groupId
      * @param groupId
      */
-    public void getGroup(String groupId){}
+    public void getGroup(String groupId, final GroupPresenter presenter){
+        DatabaseReference groupRef = database.getReference(FB_GROUP);
+        groupRef.child(groupId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Group group = (Group) dataSnapshot.getValue();
+                presenter.getGroupResult(group);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                presenter.getGroupResult(null);
+            }
+        });
+    }
 
 }

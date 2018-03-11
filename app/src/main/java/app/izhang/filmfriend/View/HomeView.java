@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Adapter.HomePagerFragmentAdapter;
+import app.izhang.filmfriend.View.Base.BaseDataView;
 
-public class HomeView extends AppCompatActivity {
+public class HomeView extends AppCompatActivity implements BaseDataView {
 
     // UI References
     private ViewPager mViewPager;
@@ -32,4 +33,38 @@ public class HomeView extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    @Override
+    public void showLoadingState(boolean visible) {
+
+    }
+
+    @Override
+    public void getData() {
+
+    }
+
+    @Override
+    public void getDataSuccess() {
+
+    }
+
+    @Override
+    public void getDataFailure() {
+
+    }
+
+    @Override
+    public void searchData() {
+
+    }
+
+    @Override
+    public void searchDataSuccess() {
+
+    }
+
+    @Override
+    public void searchDataFailure() {
+
+    }
 }
