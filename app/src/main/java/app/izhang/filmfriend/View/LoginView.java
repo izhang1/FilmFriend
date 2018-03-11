@@ -300,6 +300,8 @@ public class LoginView extends AppCompatActivity implements LoaderCallbacks<Curs
     @Override
     public void onSuccess() {
         Toast.makeText(this, "Login Successful!", Toast.LENGTH_LONG).show();
+        // TODO: 3/11/18 Change this to finish instead of launching the new intent
+        // finish();
         Intent homePageIntent = new Intent(this, HomeView.class);
         startActivity(homePageIntent);
         finish();
