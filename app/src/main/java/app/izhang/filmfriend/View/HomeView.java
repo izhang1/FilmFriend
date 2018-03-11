@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Adapter.HomePagerFragmentAdapter;
 import app.izhang.filmfriend.View.Base.BaseDataView;
@@ -59,12 +61,14 @@ public class HomeView extends AppCompatActivity implements BaseDataView {
     }
 
     @Override
-    public void searchDataSuccess() {
+    public void searchDataSuccess(ArrayList searchDataList) {
 
     }
 
     @Override
-    public void searchDataFailure() {
+    public void searchDataFailure(String failure) {
 
     }
+
+
 }

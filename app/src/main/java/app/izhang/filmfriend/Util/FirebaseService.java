@@ -42,7 +42,6 @@ public class FirebaseService {
     private final String GROUP_TITLE = "title";
     private final String GROUP_MESSAGE = "message";
     private final String GROUP_ID = "groupId";
-
     private final String MOVIE_ID = "movieId";
 
     // Authentication and service
