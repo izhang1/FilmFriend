@@ -9,11 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.Util.PosterPathUtil;
 import app.izhang.filmfriend.View.MovieDetailView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -21,10 +27,10 @@ import app.izhang.filmfriend.View.MovieDetailView;
  */
 
 public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdapter.ViewHolder>{
-    private final List<Movie> mValues;
-    private final Context mContext;
+    private ArrayList<Movie> mValues;
+    private Context mContext;
 
-    public HomeMovieViewAdapter(Context context, List<Movie> items) {
+    public HomeMovieViewAdapter(Context context, ArrayList<Movie> items) {
         mContext = context;
         mValues = items;
     }
@@ -37,39 +43,49 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
     }
 
     @Override
-    public void onBindViewHolder(final HomeMovieViewAdapter.ViewHolder holder, int position) {
-        // TODO: 3/3/18 Add the appropirate date for this specific movie 
-        // holder.mMovieTitle.setText(mValues.get(position).id);
-        // holder.mContentView.setText(mValues.get(position).content);
+    public void onBindViewHolder(final HomeMovieViewAdapter.ViewHolder movieHolder, int position) {
+        Movie tempMovie = mValues.get(position);
+        String posterPath = PosterPathUtil.buildPosterURL(tempMovie.getPoster_path());
+        Glide.with(movieHolder.mView)
+                .load(posterPath)
+                .into(movieHolder.mMoviePoster);
+
+        movieHolder.mMovieTitle.setText(tempMovie.getTitle());
+        movieHolder.mMovieRating.setText(mContext.getString(R.string.movie_rating_label) + tempMovie.getVote_average());
     }
 
     @Override
     public int getItemCount() {
-        // TODO: 3/3/18 Change this to return 0 once we are pulling in data
-        if(mValues == null) return 1;
+        if(mValues == null) return 0;
         else return mValues.size();
+    }
+
+    public void addData(ArrayList<Movie> movies){
+        // If null, replace the contents. Otherwise, add to it.
+        if(mValues == null) this.mValues = movies;
+        else{
+            this.mValues.addAll(movies);
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
-        public final TextView mMovieTitle;
-        public final TextView mMovieDescription;
-        public final ImageView mMoviePoster;
+        @BindView(R.id.tv_movie_title) public TextView mMovieTitle;
+        @BindView(R.id.tv_rating) public TextView mMovieRating;
+        @BindView(R.id.iv_movie_poster) public ImageView mMoviePoster;
         private final Context vhContext;
 
         public ViewHolder(View view, Context context) {
             super(view);
+            ButterKnife.bind(this, view);
             mView = view;
-            mMovieTitle =  view.findViewById(R.id.tv_movie_title);
-            mMovieDescription = view.findViewById(R.id.tv_group_lastmsg);
-            mMoviePoster = view.findViewById(R.id.iv_movie_poster);
             vhContext = context;
             view.setOnClickListener(this);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mMovieDescription.getText() + "'";
+            return super.toString() + " '" + mMovieTitle.getText() + "'";
         }
 
         @Override

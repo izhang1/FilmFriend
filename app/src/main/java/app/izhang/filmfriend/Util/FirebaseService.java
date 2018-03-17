@@ -131,12 +131,12 @@ public class FirebaseService {
                         groupList.add(temp);
                     }
                 }
-                groupPresenter.searchDataSuccess(groupList);
+                //groupPresenter.searchDataSuccess(groupList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                groupPresenter.searchDataFailure(databaseError.getDetails());
+                //groupPresenter.searchDataFailure(databaseError.getDetails());
             }
         });
     }

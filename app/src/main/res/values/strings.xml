@@ -32,6 +32,8 @@
     <string name="movie_description_placeholder">Movie description. Information about the movie and more.</string>
     <string name="movie_rating_placeholder">Rated: 99%</string>
 
+    <string name="movie_rating_label">"Average Vote: "</string>
+
     <!-- Preference file keys -->
     <string name="username_pref_key">username_key</string>
 

@@ -11,17 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.izhang.filmfriend.Model.Movie;
+import app.izhang.filmfriend.Presenter.HomePresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.NetworkUtil;
 import app.izhang.filmfriend.View.Adapter.HomeMovieViewAdapter;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.Base.BaseDataView;
 import app.izhang.filmfriend.View.dummy.DummyContent;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,10 +43,9 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private HomeMovieViewAdapter mMovieViewAdapter;
 
+    @BindView(R.id.movies_rv) RecyclerView mMovieRV;
 
     public HomeMovieFragment() {
         // Required empty public constructor
@@ -69,10 +72,6 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -80,15 +79,16 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_movie, container, false);
+        ButterKnife.bind(this, view);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            // Todo: Change the null value to the actual list data
-            recyclerView.setAdapter(new HomeMovieViewAdapter(getContext(), null));
-        }
+        Context context = view.getContext();
+        mMovieRV.setLayoutManager(new LinearLayoutManager(context));
+        mMovieViewAdapter = new HomeMovieViewAdapter(getContext(), null);
+        mMovieRV.setAdapter(mMovieViewAdapter);
+
+        getData(1);
+
         return view;
     }
 
@@ -99,18 +99,23 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
     }
 
     @Override
-    public void getData() {
-
+    public void getData(int pageNum) {
+        HomePresenter homePresenter = new HomePresenter(this);
+        homePresenter.getMovieData(pageNum);
     }
 
     @Override
-    public void getDataSuccess() {
-
+    public void getDataSuccess(ArrayList movies) {
+        mMovieViewAdapter.addData(movies);
+        mMovieViewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void getDataFailure() {
-
+        Toast.makeText(getContext(),
+                "Experiencing network errors. Please confirm you have a valid internet connection and try again.",
+                Toast.LENGTH_SHORT)
+                .show();
     }
 
 }

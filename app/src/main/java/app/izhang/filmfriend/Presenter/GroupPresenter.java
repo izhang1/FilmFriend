@@ -9,41 +9,8 @@ import app.izhang.filmfriend.View.Base.BaseDataView;
  * Created by ivanzhang on 3/10/18.
  */
 
-public class GroupPresenter implements BaseDataView {
-    @Override
-    public void showLoadingState(boolean visible) {
+public class GroupPresenter {
 
-    }
-
-    @Override
-    public void getData() {
-
-    }
-
-    @Override
-    public void getDataSuccess() {
-
-    }
-
-    @Override
-    public void getDataFailure() {
-
-    }
-
-    @Override
-    public void searchData() {
-
-    }
-
-    @Override
-    public void searchDataSuccess(ArrayList searchDataList) {
-
-    }
-
-    @Override
-    public void searchDataFailure(String failure) {
-
-    }
 
     public void deleteGroup(){
 

@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public interface BaseDataView {
     void showLoadingState(boolean visible);
 
-    void getData();
+    void getData(int pageNum);
 
-    void getDataSuccess();
+    void getDataSuccess(ArrayList items);
 
     void getDataFailure();
 

@@ -24,6 +24,15 @@ public class NetworkUtil{
 
     private static final String MOVIE_DB_KEY = BuildConfig.MOVIE_DB_KEY;
 
+    private static Retrofit retrofitInstance = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    public static Retrofit getRetrofitInstance(){
+        return retrofitInstance;
+    }
+
     public void testCallMovieAPI(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -38,9 +47,6 @@ public class NetworkUtil{
                 if(response.isSuccessful()) {
                     MovieJsonResponse jsonResponse = response.body();
                     ArrayList<Movie> movies = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
-                    for(Movie m : movies){
-                        System.out.println(m.toString());
-                    }
                 }else{
                     System.err.println(response.errorBody());
                 }
