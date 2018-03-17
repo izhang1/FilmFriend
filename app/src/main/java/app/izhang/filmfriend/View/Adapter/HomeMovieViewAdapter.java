@@ -68,6 +68,7 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
         }
     }
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         @BindView(R.id.tv_movie_title) public TextView mMovieTitle;

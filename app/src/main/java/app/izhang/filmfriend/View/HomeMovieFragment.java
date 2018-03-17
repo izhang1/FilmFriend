@@ -7,10 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.List;
 import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.Presenter.HomePresenter;
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.Util.EndlessScrollListener;
 import app.izhang.filmfriend.Util.NetworkUtil;
 import app.izhang.filmfriend.View.Adapter.HomeMovieViewAdapter;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
@@ -44,8 +47,12 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
     private static final String ARG_PARAM2 = "param2";
 
     private HomeMovieViewAdapter mMovieViewAdapter;
+    private LinearLayoutManager mMovieLayoutManager;
+    private EndlessScrollListener scrollListener;
+    private HomePresenter mHomePresenter = new HomePresenter(this);
 
     @BindView(R.id.movies_rv) RecyclerView mMovieRV;
+    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
 
     public HomeMovieFragment() {
         // Required empty public constructor
@@ -83,25 +90,45 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
 
         // Set the adapter
         Context context = view.getContext();
-        mMovieRV.setLayoutManager(new LinearLayoutManager(context));
+        mMovieLayoutManager = new LinearLayoutManager(context);
+        mMovieRV.setLayoutManager(mMovieLayoutManager);
         mMovieViewAdapter = new HomeMovieViewAdapter(getContext(), null);
         mMovieRV.setAdapter(mMovieViewAdapter);
-
         getData(1);
 
+        // Scroll Listener
+        scrollListener = new EndlessScrollListener(mMovieLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                mHomePresenter.getMovieData(page);
+            }
+        };
+
+        mMovieRV.addOnScrollListener(scrollListener);
+
         return view;
+    }
+
+    public void resetEndlessScroll(){
+        // 1. First, clear the array of data
+        //listOfItems.clear();
+        // 2. Notify the adapter of the update
+        //recyclerAdapterOfItems.notifyDataSetChanged(); // or notifyItemRangeRemoved
+
+        // 3. Reset endless scroll listener when performing a new search
+        scrollListener.resetState();
     }
 
 
     @Override
     public void showLoadingState(boolean visible) {
-
+        int visibility = (visible == true) ? View.VISIBLE: View.INVISIBLE;
+        mProgressBar.setVisibility(visibility);
     }
 
     @Override
     public void getData(int pageNum) {
-        HomePresenter homePresenter = new HomePresenter(this);
-        homePresenter.getMovieData(pageNum);
+        mHomePresenter.getMovieData(pageNum);
     }
 
     @Override
