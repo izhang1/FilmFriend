@@ -18,11 +18,12 @@ import java.util.ArrayList;
 
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Adapter.HomePagerFragmentAdapter;
+import app.izhang.filmfriend.View.Base.BaseDataSearchView;
 import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeView extends AppCompatActivity implements BaseDataView {
+public class HomeView extends AppCompatActivity implements BaseDataSearchView {
 
     // UI References
     @BindView(R.id.viewPager)ViewPager mViewPager;
@@ -43,21 +44,6 @@ public class HomeView extends AppCompatActivity implements BaseDataView {
 
     @Override
     public void showLoadingState(boolean visible) {
-
-    }
-
-    @Override
-    public void getData() {
-
-    }
-
-    @Override
-    public void getDataSuccess() {
-
-    }
-
-    @Override
-    public void getDataFailure() {
 
     }
 

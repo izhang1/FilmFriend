@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.izhang.filmfriend.Model.Movie;
@@ -19,6 +20,7 @@ import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.NetworkUtil;
 import app.izhang.filmfriend.View.Adapter.HomeMovieViewAdapter;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
+import app.izhang.filmfriend.View.Base.BaseDataView;
 import app.izhang.filmfriend.View.dummy.DummyContent;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +33,7 @@ import retrofit2.Response;
  * Use the {@link HomeMovieFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeMovieFragment extends Fragment{
+public class HomeMovieFragment extends Fragment implements BaseDataView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,5 +92,25 @@ public class HomeMovieFragment extends Fragment{
         return view;
     }
 
+
+    @Override
+    public void showLoadingState(boolean visible) {
+
+    }
+
+    @Override
+    public void getData() {
+
+    }
+
+    @Override
+    public void getDataSuccess() {
+
+    }
+
+    @Override
+    public void getDataFailure() {
+
+    }
 
 }

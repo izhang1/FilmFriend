@@ -15,10 +15,4 @@ public interface BaseDataView {
 
     void getDataFailure();
 
-    void searchData();
-
-    void searchDataSuccess(ArrayList searchDataList);
-
-    void searchDataFailure(String failure);
-
 }
