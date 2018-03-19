@@ -10,7 +10,7 @@ public interface BaseDataSearchView {
 
     void showLoadingState(boolean visible);
 
-    void searchData();
+    void searchData(String searchQuery);
 
     void searchDataSuccess(ArrayList searchDataList);
 

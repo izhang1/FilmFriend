@@ -2,6 +2,7 @@ package app.izhang.filmfriend.View;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -23,7 +24,7 @@ import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeView extends AppCompatActivity implements BaseDataSearchView {
+public class HomeView extends AppCompatActivity{
 
     // UI References
     @BindView(R.id.viewPager)ViewPager mViewPager;
@@ -43,26 +44,6 @@ public class HomeView extends AppCompatActivity implements BaseDataSearchView {
     }
 
     @Override
-    public void showLoadingState(boolean visible) {
-
-    }
-
-    @Override
-    public void searchData() {
-
-    }
-
-    @Override
-    public void searchDataSuccess(ArrayList searchDataList) {
-
-    }
-
-    @Override
-    public void searchDataFailure(String failure) {
-
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
@@ -76,7 +57,10 @@ public class HomeView extends AppCompatActivity implements BaseDataSearchView {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                return false;
+                Intent searchIntent = new Intent(getApplicationContext(), SearchResultActivity.class);
+                searchIntent.putExtra(SearchResultActivity.SEARCH_KEY, s);
+                startActivity(searchIntent);
+                return true;
             }
 
             @Override

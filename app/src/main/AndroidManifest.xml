@@ -14,18 +14,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.LoadingView" >
+
+        <activity android:name=".View.LoadingView">
+
         </activity>
 
         <activity android:name=".View.RegisterView" />
 
-        <activity android:name=".View.LoginView" android:label="@string/title_activity_login_view" >
-
+        <activity
+            android:name=".View.LoginView"
+            android:label="@string/title_activity_login_view">
         </activity>
 
         <activity
             android:name=".View.HomeView"
-            android:label="@string/title_activity_home_view" >
+            android:label="@string/title_activity_home_view">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,11 +36,17 @@
 
         </activity>
 
-        <activity android:name=".View.MovieDetailView"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".View.MovieDetailView"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".View.GroupDetailView" />
 
-        <activity android:name=".View.GroupDetailView"></activity>
+        <activity android:name=".View.SearchResultActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".View.HomeView" />
 
+        </activity>
     </application>
 
 </manifest>
