@@ -16,6 +16,9 @@ import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.dummy.DummyContent;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import co.intentservice.chatui.fab.FloatingActionButton;
 
 /**
  * A fragment representing a list of Items.
@@ -28,6 +31,9 @@ public class GroupFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+
+    @BindView(R.id.group_rv) RecyclerView mGroupRV;
+    @BindView(R.id.fab) FloatingActionButton addGroupFAB;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,20 +65,31 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_list, container, false);
+        ButterKnife.bind(this, view);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            // Todo: Make listener null
-            recyclerView.setAdapter(new MyGroupRecyclerViewAdapter(getContext(), getDummyData()));
+        Context context = view.getContext();
+        if (mColumnCount <= 1) {
+            mGroupRV.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            mGroupRV.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+
+        mGroupRV.setAdapter(new MyGroupRecyclerViewAdapter(getContext(), getDummyData()));
+
+        addGroupFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewGroup();
+            }
+        });
+
         return view;
+    }
+
+    public void addNewGroup(){
+        // TODO Show alert dialog to ask user whether they want to utilize their location and add a name
+        // TODO Create the new group and start a new intent for the user, requery for the group data list as well
     }
 
     // TODO: 3/4/18 Remove this after confirming the data shows
