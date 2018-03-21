@@ -55,6 +55,24 @@ public class FirebaseService {
         return instance;
     }
 
+
+    public boolean userIsSignedIn(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            Log.v("FirebaseService", "user is signed in");
+            return true;
+        } else {
+            // No user is signed in
+            Log.v("FirebaseService", "user is not signed in");
+            return false;
+        }
+    }
+
+    public FirebaseUser getUserInfo(){
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
+
     /**
      * Login method to authenticate with Firebase Auth using an email and password.
      * -
@@ -104,7 +122,7 @@ public class FirebaseService {
     /**
      * Create Group method. Creates a new group entry in the Firebase realtime database system.
      */
-    public boolean createGroup(Group group){
+    public boolean createGroup(Group group, boolean enableLocation){
         DatabaseReference groupRef = database.getReference(FB_GROUP);
         Task createGroupResult = groupRef.setValue(group);
         if(createGroupResult.isSuccessful()){
