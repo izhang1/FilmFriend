@@ -43,34 +43,6 @@ public class HomeView extends AppCompatActivity{
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                Intent searchIntent = new Intent(getApplicationContext(), SearchResultActivity.class);
-                searchIntent.putExtra(SearchResultActivity.SEARCH_KEY, s);
-                startActivity(searchIntent);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-
-        return true;
-    }
 
 
 }

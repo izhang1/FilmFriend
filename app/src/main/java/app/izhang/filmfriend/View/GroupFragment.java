@@ -2,11 +2,14 @@ package app.izhang.filmfriend.View;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,10 +18,8 @@ import java.util.ArrayList;
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
-import app.izhang.filmfriend.View.dummy.DummyContent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import co.intentservice.chatui.fab.FloatingActionButton;
 
 /**
  * A fragment representing a list of Items.
@@ -33,7 +34,8 @@ public class GroupFragment extends Fragment {
     private int mColumnCount = 1;
 
     @BindView(R.id.group_rv) RecyclerView mGroupRV;
-    @BindView(R.id.fab) FloatingActionButton addGroupFAB;
+    @BindView(R.id.fab)
+    FloatingActionButton addGroupFAB;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -66,6 +68,9 @@ public class GroupFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_list, container, false);
         ButterKnife.bind(this, view);
+
+        // Customize the menu
+        setHasOptionsMenu(true);
 
         // Set the adapter
         Context context = view.getContext();
@@ -105,6 +110,11 @@ public class GroupFragment extends Fragment {
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.group_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
 
 }

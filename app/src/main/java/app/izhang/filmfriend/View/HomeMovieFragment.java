@@ -1,6 +1,8 @@
 package app.izhang.filmfriend.View;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,10 +11,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -88,6 +93,9 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
         View view = inflater.inflate(R.layout.fragment_home_movie, container, false);
         ButterKnife.bind(this, view);
 
+        // Customize the menu
+        setHasOptionsMenu(true);
+
         // Set the adapter
         Context context = view.getContext();
         mMovieLayoutManager = new LinearLayoutManager(context);
@@ -143,6 +151,34 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
                 "Experiencing network errors. Please confirm you have a valid internet connection and try again.",
                 Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Intent searchIntent = new Intent(getActivity().getApplicationContext(), SearchResultActivity.class);
+                searchIntent.putExtra(SearchResultActivity.SEARCH_KEY, s);
+                startActivity(searchIntent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }
