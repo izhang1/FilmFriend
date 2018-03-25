@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -81,7 +82,7 @@ public class HomeView extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         LocationUtil.gatherZipCode(this);
                 } else {
-
+                    Toast.makeText(this, "Permission denied: No location features will be used", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
