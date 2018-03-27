@@ -42,6 +42,7 @@ public class FirebaseService {
     private final String GROUP_TITLE = "title";
     private final String GROUP_MESSAGE = "message";
     private final String GROUP_ID = "groupId";
+    private final String GROUP_OWNER_ID = "ownerId";
     private final String MOVIE_ID = "movieId";
 
     // Authentication and service
@@ -122,14 +123,14 @@ public class FirebaseService {
     /**
      * Create Group method. Creates a new group entry in the Firebase realtime database system.
      */
-    public boolean createGroup(Group group, boolean enableLocation){
-        DatabaseReference groupRef = database.getReference(FB_GROUP);
-        Task createGroupResult = groupRef.setValue(group);
-        if(createGroupResult.isSuccessful()){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean createGroup(Group group){
+        DatabaseReference groupRef = database.getReference(FB_GROUP).child(group.getId());
+
+        groupRef.child(GROUP_TITLE).setValue(group.getTitle());
+        groupRef.child(GROUP_ID).setValue(group.getId());
+        groupRef.child(GROUP_OWNER_ID).setValue(group.getOwner());
+
+        return true;
     }
 
     /**
