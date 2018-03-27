@@ -58,7 +58,7 @@ public class LocationUtil {
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             String postalCode = addresses.get(0).getPostalCode();
 
-                            SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+                            SharedPreferences sharedPref = activity.getSharedPreferences(activity.getString(R.string.pref_file_key), Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString(POSTAL_CODE_KEY, postalCode);
                             editor.commit();
@@ -71,7 +71,7 @@ public class LocationUtil {
                 });
     }
 
-    public String getPostalCode(Context context){
+    public static String getZipCode(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.pref_file_key), Context.MODE_PRIVATE);
         return (sharedPref.getString(LocationUtil.POSTAL_CODE_KEY, ""));
     }

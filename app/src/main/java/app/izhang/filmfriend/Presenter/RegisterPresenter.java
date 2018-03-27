@@ -35,7 +35,7 @@ public class RegisterPresenter {
     }
 
     public void saveUsernameLocally(String username){
-        SharedPreferences sharedPref = mView.getPreferences(mView.MODE_PRIVATE);
+        SharedPreferences sharedPref = mView.getSharedPreferences(mView.getApplicationContext().getString(R.string.pref_file_key), mView.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(mView.getString(R.string.username_pref_key), username);
         editor.commit();
