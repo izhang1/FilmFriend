@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,7 @@ import app.izhang.filmfriend.Presenter.GroupPresenter;
 import app.izhang.filmfriend.Presenter.LoginPresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
+import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -37,17 +39,21 @@ import butterknife.ButterKnife;
  * <p/>
  * interface.
  */
-public class GroupFragment extends Fragment {
+public class GroupFragment extends Fragment implements BaseDataView {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
+    private int pageNum = 1;
+
     @BindView(R.id.group_rv) RecyclerView mGroupRV;
     @BindView(R.id.fab) FloatingActionButton addGroupFAB;
+    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
 
     GroupPresenter mGroupPresenter;
+    MyGroupRecyclerViewAdapter mGroupRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -94,7 +100,10 @@ public class GroupFragment extends Fragment {
             mGroupRV.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        mGroupRV.setAdapter(new MyGroupRecyclerViewAdapter(getContext(), getDummyData()));
+        mGroupRecyclerViewAdapter = new MyGroupRecyclerViewAdapter(getContext(), null);
+        mGroupRV.setAdapter(mGroupRecyclerViewAdapter);
+
+        getData(pageNum);
 
         addGroupFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,12 +115,60 @@ public class GroupFragment extends Fragment {
         return view;
     }
 
+
+    // TODO: 3/4/18 Remove this after confirming the data shows
+    public ArrayList getDummyData(){
+        ArrayList list = new ArrayList();
+        Group group1 = new Group("Title 1", null, "Ivan", "1");
+        Group group2 = new Group("Title 2", null, "Ivan", "2");
+
+        list.add(group1);
+        list.add(group2);
+
+        return list;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.group_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    /** DATA METHODS **/
+
     public void addNewGroup(){
         // TODO Show alert dialog to ask user whether they want to utilize their location and add a name
         // TODO Create the new group and start a new intent for the user, requery for the group data list as well
         Toast.makeText(getContext(), "Making new group", Toast.LENGTH_SHORT).show();
         mGroupPresenter.checkIfLoggedIn();
     }
+
+    @Override
+    public void showLoadingState(boolean visible) {
+        int visibility = (visible == true) ? View.VISIBLE: View.INVISIBLE;
+        mProgressBar.setVisibility(visibility);
+    }
+
+    @Override
+    public void getData(int pageNum) {
+        mGroupPresenter.getGroups(pageNum);
+    }
+
+    @Override
+    public void getDataSuccess(ArrayList groups) {
+        mGroupRecyclerViewAdapter.addData(groups);
+        mGroupRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getDataFailure() {
+        Toast.makeText(getContext(),
+                "Experiencing network errors. Please confirm you have a valid internet connection and try again.",
+                Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    /** DIALOG METHODS **/
 
     public AlertDialog groupDialogCreator(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -171,24 +228,4 @@ public class GroupFragment extends Fragment {
 
         return builder.create();
     }
-
-    // TODO: 3/4/18 Remove this after confirming the data shows
-    public ArrayList getDummyData(){
-        ArrayList list = new ArrayList();
-        Group group1 = new Group("Title 1", null, "Ivan", "1");
-        Group group2 = new Group("Title 2", null, "Ivan", "2");
-
-        list.add(group1);
-        list.add(group2);
-
-        return list;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.group_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
 }

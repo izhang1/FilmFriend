@@ -57,6 +57,16 @@ public class GroupPresenter {
         firebaseService.createGroup(group);
     }
 
+    // Each pageNum = 40 groups
+    public void getGroups(int pageNum){
+        mView.showLoadingState(true);
+        firebaseService.getGroups(pageNum, this);
+    }
+
+    public void getGroupsResults(ArrayList groups){
+        mView.getDataSuccess(groups);
+        mView.showLoadingState(false);
+    }
 
     public void deleteGroup(){
 

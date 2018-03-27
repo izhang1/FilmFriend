@@ -13,6 +13,8 @@ import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.GroupDetailView;
 import app.izhang.filmfriend.View.dummy.DummyContent.DummyItem;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ import java.util.List;
  */
 public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Group> mValues;
+    private List<Group> mValues;
     private final Context mContext;
 
     public MyGroupRecyclerViewAdapter(Context context, List<Group> items) {
@@ -49,6 +51,13 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
             return mValues.size();
         }else{
             return 0;
+        }
+    }
+
+    public void addData(ArrayList groups){
+        if(mValues == null) this.mValues = groups;
+        else{
+            this.mValues.addAll(groups);
         }
     }
 

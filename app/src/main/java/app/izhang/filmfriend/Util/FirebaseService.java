@@ -134,6 +134,33 @@ public class FirebaseService {
     }
 
     /**
+     * Get Group method. Creates a new group entry in the Firebase realtime database system.
+     */
+    public void getGroups(int pageNum, final GroupPresenter groupPresenter){
+        DatabaseReference groupRef = database.getReference(FB_GROUP);
+        final int initialCount = (pageNum - 1) * 40;
+        final int lastCount = (pageNum * 40) - 1;
+        groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int matchStartingCount = 0;
+                ArrayList groups = new ArrayList();
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                    Group group = childSnapshot.getValue(Group.class);
+                    groups.add(group);
+                    matchStartingCount++;
+                }
+                groupPresenter.getGroupsResults(groups);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
      * Search Group method. Returns a list of Groups with the search term.
      */
     public void searchGroup(final String searchTerm, final GroupPresenter groupPresenter){

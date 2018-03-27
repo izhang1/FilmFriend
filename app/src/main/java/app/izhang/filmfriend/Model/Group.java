@@ -3,18 +3,23 @@ package app.izhang.filmfriend.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.ArrayList;
 
 /**
  * Created by ivanzhang on 2/17/18.
  * - Group model that contains information about a specific group of users who are messaging each other.
  */
-
+@IgnoreExtraProperties
 public class Group implements Parcelable{
     private String title; // Title of this group
     private ArrayList<Message> messages; // Messages that is current part of this group
     private String owner; // User id of this group
     private String id; // ID of this group
+
+    // Default constructor for calls to DataSnapshot.getValue
+    public Group(){}
 
     public Group(String title, ArrayList<Message> messages, String owner, String id) {
         this.title = title;
