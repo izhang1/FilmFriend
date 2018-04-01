@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,15 +19,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.ArrayList;
 
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.Presenter.GroupPresenter;
 import app.izhang.filmfriend.Presenter.LoginPresenter;
 import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.Util.EndlessScrollListener;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;
@@ -46,14 +43,18 @@ public class GroupFragment extends Fragment implements BaseDataView {
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
+    private EndlessScrollListener scrollListener;
+
+
     private int pageNum = 1;
 
     @BindView(R.id.group_rv) RecyclerView mGroupRV;
     @BindView(R.id.fab) FloatingActionButton addGroupFAB;
     @BindView(R.id.progress_bar) ProgressBar mProgressBar;
 
-    GroupPresenter mGroupPresenter;
-    MyGroupRecyclerViewAdapter mGroupRecyclerViewAdapter;
+    private LinearLayoutManager mGroupLayoutManager;
+    private GroupPresenter mGroupPresenter;
+    private MyGroupRecyclerViewAdapter mGroupRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -94,11 +95,8 @@ public class GroupFragment extends Fragment implements BaseDataView {
 
         // Set the adapter
         Context context = view.getContext();
-        if (mColumnCount <= 1) {
-            mGroupRV.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            mGroupRV.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
+        mGroupLayoutManager = new LinearLayoutManager(context);
+        mGroupRV.setLayoutManager(mGroupLayoutManager);
 
         mGroupRecyclerViewAdapter = new MyGroupRecyclerViewAdapter(getContext(), null);
         mGroupRV.setAdapter(mGroupRecyclerViewAdapter);
@@ -111,6 +109,16 @@ public class GroupFragment extends Fragment implements BaseDataView {
                 addNewGroup();
             }
         });
+
+        // Scroll Listener
+        scrollListener = new EndlessScrollListener(mGroupLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                getData(page);
+            }
+        };
+
+        mGroupRV.addOnScrollListener(scrollListener);
 
         return view;
     }
@@ -135,6 +143,11 @@ public class GroupFragment extends Fragment implements BaseDataView {
     }
 
     /** DATA METHODS **/
+
+    public void showAddedGroup(Group group){
+        mGroupRecyclerViewAdapter.addNewGroupData(group);
+        mGroupRecyclerViewAdapter.notifyDataSetChanged();
+    }
 
     public void addNewGroup(){
         // TODO Show alert dialog to ask user whether they want to utilize their location and add a name

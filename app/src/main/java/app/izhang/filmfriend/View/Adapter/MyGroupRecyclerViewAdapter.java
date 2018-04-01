@@ -42,7 +42,8 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mGroup = mValues.get(position);
         holder.mGroupTitle.setText(mValues.get(position).getTitle());
-        holder.mGroupLastMessage.setText(mValues.get(position).getOwner());
+        // TODO: 4/1/18 Pull the last message and display it 
+        //holder.mGroupLastMessage.setText(mValues.get(position).getMessages());
     }
 
     @Override
@@ -56,8 +57,19 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
 
     public void addData(ArrayList groups){
         if(mValues == null) this.mValues = groups;
-        else{
+        else if(groups != null){
             this.mValues.addAll(groups);
+        }
+    }
+
+    public void addNewGroupData(Group group){
+        if(mValues == null){
+            ArrayList groups = new ArrayList();
+            groups.add(group);
+            this.mValues = groups;
+        }else{
+            // Add to front of list
+            mValues.add(0, group);
         }
     }
 

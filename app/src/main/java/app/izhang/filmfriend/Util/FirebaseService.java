@@ -138,24 +138,38 @@ public class FirebaseService {
      */
     public void getGroups(int pageNum, final GroupPresenter groupPresenter){
         DatabaseReference groupRef = database.getReference(FB_GROUP);
-        final int initialCount = (pageNum - 1) * 40;
-        final int lastCount = (pageNum * 40) - 1;
+        final int initialCount = (pageNum - 1) * 20;
+        final int lastCount = (pageNum * 20) - 1;
         groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Return if the children count is less than the initial count
+                if(dataSnapshot.getChildrenCount() <= initialCount){
+                    groupPresenter.getGroupsResults(null);
+                    return;
+                }
+
                 int matchStartingCount = 0;
                 ArrayList groups = new ArrayList();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                    Group group = childSnapshot.getValue(Group.class);
-                    groups.add(group);
-                    matchStartingCount++;
+                    if(matchStartingCount >= initialCount && matchStartingCount <= lastCount){
+                        Group group = childSnapshot.getValue(Group.class);
+                        groups.add(group);
+                    }
+                    matchStartingCount ++;
+
                 }
                 groupPresenter.getGroupsResults(groups);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.v("FirebaseService", "onCancelled");
+                Log.v("FirebaseService", "Error: " + databaseError.getDetails());
+                Log.v("FirebaseService", "Error: " + databaseError.getMessage());
 
+                groupPresenter.getGroupsResults(null);
             }
         });
     }
