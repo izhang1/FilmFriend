@@ -17,6 +17,7 @@ public class Group implements Parcelable{
     private ArrayList<Message> messages; // Messages that is current part of this group
     private String owner; // User id of this group
     private String id; // ID of this group
+    private String zipcode;
 
     // Default constructor for calls to DataSnapshot.getValue
     public Group(){}
@@ -26,16 +27,17 @@ public class Group implements Parcelable{
         this.messages = messages;
         this.owner = owner;
         this.id = id;
+        this.zipcode = "";
     }
 
 
     // Parcelable Implementation
-
     private Group(Parcel in){
         title = in.readString();
         messages = in.readArrayList(Message.class.getClassLoader());
         owner = in.readString();
         id = in.readString();
+        zipcode = in.readString();
     }
 
     @Override
@@ -49,6 +51,7 @@ public class Group implements Parcelable{
         dest.writeList(messages);
         dest.writeString(owner);
         dest.writeString(id);
+        dest.writeString(zipcode);
     }
 
     public static final Parcelable.Creator CREATOR
@@ -95,5 +98,13 @@ public class Group implements Parcelable{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getZipcode(){
+        return zipcode;
+    }
+
+    public void setZipCode(String zipCode){
+        this.zipcode = zipCode;
     }
 }

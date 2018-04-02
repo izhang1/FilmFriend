@@ -37,12 +37,14 @@ public class FirebaseService {
 
     private final String FB_ACCT = "ACCOUNT";
     private final String FB_GROUP = "GROUP";
+    private final String FB_GROUP_LOC = "GROUPLOC";
     private final String FB_SAVED = "SAVED";
 
     private final String GROUP_TITLE = "title";
     private final String GROUP_MESSAGE = "message";
     private final String GROUP_ID = "groupId";
     private final String GROUP_OWNER_ID = "ownerId";
+    private final String GROUP_ZIP = "zipcode";
     private final String MOVIE_ID = "movieId";
 
     // Authentication and service
@@ -129,6 +131,18 @@ public class FirebaseService {
         groupRef.child(GROUP_TITLE).setValue(group.getTitle());
         groupRef.child(GROUP_ID).setValue(group.getId());
         groupRef.child(GROUP_OWNER_ID).setValue(group.getOwner());
+
+        if(!group.getZipcode().isEmpty()){
+            String zipcode = group.getZipcode();
+
+            groupRef.child(GROUP_ZIP).setValue(zipcode);
+
+            DatabaseReference groupLocRef = database.getReference(FB_GROUP_LOC).child(zipcode).child(group.getId());
+            groupLocRef.child(GROUP_TITLE).setValue(group.getTitle());
+            groupLocRef.child(GROUP_ID).setValue(group.getId());
+            groupLocRef.child(GROUP_OWNER_ID).setValue(group.getOwner());
+            groupLocRef.child(GROUP_ZIP).setValue(group.getZipcode());
+        }
 
         return true;
     }

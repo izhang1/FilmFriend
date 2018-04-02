@@ -53,10 +53,12 @@ public class GroupPresenter {
         // Setting a new random ID as the group ID
         mUser = FirebaseService.getInstance().getUserInfo();
         UUID uuid = UUID.randomUUID();
-        String groupID = (enableLocation == true) ? (zipCode + "--"+ uuid.toString()) : uuid.toString();
-        Group group = new Group(title, null, mUser.getUid(), groupID);
+        Group group = new Group(title, null, mUser.getUid(), uuid.toString());
+        group.setZipCode(zipCode);
         firebaseService.createGroup(group);
-        addNewGroupResult(group);
+
+        // Callback to the view
+        mView.showAddedGroup(group);
     }
 
     // Each pageNum = 40 groups
@@ -70,9 +72,6 @@ public class GroupPresenter {
         mView.showLoadingState(false);
     }
 
-    public void addNewGroupResult(Group group){
-        mView.showAddedGroup(group);
-    }
 
     public void deleteGroup(){
 
