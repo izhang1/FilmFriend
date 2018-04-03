@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import app.izhang.filmfriend.Model.Movie;
-import app.izhang.filmfriend.Util.MovieJsonResponse;
+import app.izhang.filmfriend.Model.Services.MovieJsonResponse;
 import app.izhang.filmfriend.Util.NetworkUtil;
-import app.izhang.filmfriend.Util.TheMovieDBService;
+import app.izhang.filmfriend.Model.Services.TheMovieDBService;
 import app.izhang.filmfriend.View.HomeMovieFragment;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,20 +1,14 @@
 package app.izhang.filmfriend.Presenter;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 import app.izhang.filmfriend.Model.Group;
-import app.izhang.filmfriend.R;
-import app.izhang.filmfriend.Util.FirebaseService;
+import app.izhang.filmfriend.Model.SharedPreferenceManager;
+import app.izhang.filmfriend.Model.Services.FirebaseService;
 import app.izhang.filmfriend.Util.LocationUtil;
-import app.izhang.filmfriend.View.Base.BaseDataView;
 import app.izhang.filmfriend.View.GroupFragment;
 
 /**
@@ -41,13 +35,14 @@ public class GroupPresenter {
 
     public void addNewGroup(String title, boolean enableLocation){
         String zipCode = "";
+
+        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(mView.getContext());
         if(enableLocation){
-            zipCode = LocationUtil.getZipCode(mView.getContext());
+            zipCode = sharedPreferenceManager.getZipCodeFromPref();
             if(zipCode.isEmpty()){
                 LocationUtil.requestLocationPermissions(mView.getActivity());
                 LocationUtil.gatherZipCode(mView.getActivity());
             }
-            zipCode = LocationUtil.getZipCode(mView.getContext());
         }
 
         // Setting a new random ID as the group ID

@@ -5,10 +5,13 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import app.izhang.filmfriend.BuildConfig;
 import app.izhang.filmfriend.Model.Movie;
+import app.izhang.filmfriend.Model.Services.MovieJsonResponse;
+import app.izhang.filmfriend.Model.Services.TheMovieDBService;
+import app.izhang.filmfriend.Model.Services.ZipCodeService;
+import app.izhang.filmfriend.Model.Services.ZipJsonResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

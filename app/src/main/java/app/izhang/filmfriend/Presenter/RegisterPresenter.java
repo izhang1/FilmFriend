@@ -3,8 +3,7 @@ package app.izhang.filmfriend.Presenter;
 import android.content.SharedPreferences;
 
 import app.izhang.filmfriend.R;
-import app.izhang.filmfriend.Util.FirebaseService;
-import app.izhang.filmfriend.View.LoginView;
+import app.izhang.filmfriend.Model.Services.FirebaseService;
 import app.izhang.filmfriend.View.RegisterView;
 
 /**

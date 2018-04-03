@@ -1,14 +1,6 @@
 package app.izhang.filmfriend.Presenter;
 
-import android.support.annotation.NonNull;
-import android.view.View;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-
-import app.izhang.filmfriend.Util.FirebaseService;
+import app.izhang.filmfriend.Model.Services.FirebaseService;
 import app.izhang.filmfriend.View.LoginView;
 
 /**

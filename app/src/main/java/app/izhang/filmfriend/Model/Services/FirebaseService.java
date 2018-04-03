@@ -1,10 +1,8 @@
-package app.izhang.filmfriend.Util;
+package app.izhang.filmfriend.Model.Services;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -94,7 +92,6 @@ public class FirebaseService {
                 }
             }
         });
-
     }
 
     /**
