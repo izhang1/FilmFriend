@@ -1,4 +1,4 @@
-package app.izhang.filmfriend.Util;
+package app.izhang.filmfriend.Model.Services;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

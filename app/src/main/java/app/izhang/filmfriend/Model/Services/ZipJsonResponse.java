@@ -1,4 +1,4 @@
-package app.izhang.filmfriend.Util;
+package app.izhang.filmfriend.Model.Services;
 
 import app.izhang.filmfriend.Model.Movie;
 
