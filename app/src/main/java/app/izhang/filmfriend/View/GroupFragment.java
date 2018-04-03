@@ -26,6 +26,7 @@ import app.izhang.filmfriend.Presenter.GroupPresenter;
 import app.izhang.filmfriend.Presenter.LoginPresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.EndlessScrollListener;
+import app.izhang.filmfriend.Util.NetworkUtil;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;

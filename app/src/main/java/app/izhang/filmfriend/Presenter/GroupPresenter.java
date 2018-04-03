@@ -54,7 +54,7 @@ public class GroupPresenter {
         mUser = FirebaseService.getInstance().getUserInfo();
         UUID uuid = UUID.randomUUID();
         Group group = new Group(title, null, mUser.getUid(), uuid.toString());
-        group.setZipCode(zipCode);
+        group.setZipcode(zipCode);
         firebaseService.createGroup(group);
 
         // Callback to the view

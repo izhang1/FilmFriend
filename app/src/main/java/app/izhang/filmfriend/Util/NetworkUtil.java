@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import app.izhang.filmfriend.BuildConfig;
 import app.izhang.filmfriend.Model.Movie;
@@ -20,17 +21,58 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkUtil{
 
-    private static final String BASE_URL = "http://api.themoviedb.org/3/";
-
     private static final String MOVIE_DB_KEY = BuildConfig.MOVIE_DB_KEY;
+    private static final String LOC_ZIP_KEY = BuildConfig.LOC_ZIP_KEY;
+
+    private static final String BASE_URL = "http://api.themoviedb.org/3/";
+    private static final String BASE_LOC_URL = "https://www.zipcodeapi.com/rest/"+ LOC_ZIP_KEY +"/radius.json/";
 
     private static Retrofit retrofitInstance = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
+    private static Retrofit retrofitLocInstance = new Retrofit.Builder()
+            .baseUrl(BASE_LOC_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
     public static Retrofit getRetrofitInstance(){
         return retrofitInstance;
+    }
+
+    public static Retrofit getRetrofitLocInstance(){
+        return retrofitLocInstance;
+    }
+
+    public static void testZipLocApi(){
+        Retrofit retrofit = getRetrofitLocInstance();
+
+        ZipCodeService service = retrofit.create(ZipCodeService.class);
+        Call<ZipJsonResponse> zipCodeCall = service.getZipCodesByRadius("28217", "20");
+        zipCodeCall.enqueue(new Callback<ZipJsonResponse>() {
+            @Override
+            public void onResponse(Call<ZipJsonResponse> call, Response<ZipJsonResponse> response) {
+                if(response.isSuccessful()){
+                    ZipJsonResponse zipResponse = response.body();
+                    ArrayList<String> zipCodes = new ArrayList<>(Arrays.asList(zipResponse.getResults()));
+                    for(String zips: zipCodes){
+                        Log.v("ZipCode: ", zips);
+                    }
+
+                }else{
+                    Log.v("Call: ", call.toString());
+                    Log.v("Not Successful: ", response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ZipJsonResponse> call, Throwable t) {
+                Log.v("Call: ", call.toString());
+                Log.v("Not Successful: ", "Call Failed \n");
+                t.printStackTrace();
+            }
+        });
     }
 
     public void testCallMovieAPI(){

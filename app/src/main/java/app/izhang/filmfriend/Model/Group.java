@@ -104,7 +104,7 @@ public class Group implements Parcelable{
         return zipcode;
     }
 
-    public void setZipCode(String zipCode){
+    public void setZipcode(String zipCode){
         this.zipcode = zipCode;
     }
 }
