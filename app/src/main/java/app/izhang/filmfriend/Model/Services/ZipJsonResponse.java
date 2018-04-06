@@ -1,7 +1,5 @@
 package app.izhang.filmfriend.Model.Services;
 
-import app.izhang.filmfriend.Model.Movie;
-
 /**
  * Created by ivanzhang on 4/2/18.
  */

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.R;

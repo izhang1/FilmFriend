@@ -1,7 +1,5 @@
 package app.izhang.filmfriend.Presenter;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,13 +37,14 @@ public class HomePresenter {
                     ArrayList<Movie> movies = new ArrayList<>(Arrays.asList(jsonResponse.getResults()));
                     onDataResult(true, movies);
                 }else{
+                    onDataResult(false, null);
                     System.err.println(response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(Call<MovieJsonResponse> call, Throwable t) {
-                Log.d("Error",t.getMessage());
+                onDataResult(false, null);
             }
         });
     }

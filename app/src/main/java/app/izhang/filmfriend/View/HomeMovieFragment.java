@@ -1,41 +1,30 @@
 package app.izhang.filmfriend.View;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.Presenter.HomePresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.EndlessScrollListener;
-import app.izhang.filmfriend.Util.NetworkUtil;
 import app.izhang.filmfriend.View.Adapter.HomeMovieViewAdapter;
-import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.Base.BaseDataView;
-import app.izhang.filmfriend.View.dummy.DummyContent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -157,8 +146,6 @@ public class HomeMovieFragment extends Fragment implements BaseDataView{
         inflater.inflate(R.menu.search_menu, menu);
 
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search).getActionView();
 

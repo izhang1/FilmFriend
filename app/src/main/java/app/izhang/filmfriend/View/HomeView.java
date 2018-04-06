@@ -1,38 +1,18 @@
 package app.izhang.filmfriend.View;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import java.util.ArrayList;
 
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.LocationUtil;
 import app.izhang.filmfriend.View.Adapter.HomePagerFragmentAdapter;
-import app.izhang.filmfriend.View.Base.BaseDataSearchView;
-import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

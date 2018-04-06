@@ -2,6 +2,7 @@ package app.izhang.filmfriend.Presenter;
 
 import android.content.SharedPreferences;
 
+import app.izhang.filmfriend.Model.SharedPreferenceManager;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Model.Services.FirebaseService;
 import app.izhang.filmfriend.View.RegisterView;
@@ -21,7 +22,8 @@ public class RegisterPresenter {
         FirebaseService fbService = FirebaseService.getInstance();
         fbService.createAccount(email, password, this);
         mView.showLoadingState(true);
-        saveUsernameLocally(username);
+        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(mView);
+        sharedPreferenceManager.saveUsernameToPref(username);
     }
 
     public void onResult(boolean success){
@@ -31,12 +33,5 @@ public class RegisterPresenter {
             mView.onFailure();
         }
         mView.showLoadingState(false);
-    }
-
-    public void saveUsernameLocally(String username){
-        SharedPreferences sharedPref = mView.getSharedPreferences(mView.getApplicationContext().getString(R.string.pref_file_key), mView.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(mView.getString(R.string.username_pref_key), username);
-        editor.commit();
     }
 }

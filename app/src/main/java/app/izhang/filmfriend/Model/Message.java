@@ -3,8 +3,6 @@ package app.izhang.filmfriend.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Date;
-
 /**
  * Created by ivanzhang on 2/17/18.
  * - Message model. Contains information about a message and the owner.

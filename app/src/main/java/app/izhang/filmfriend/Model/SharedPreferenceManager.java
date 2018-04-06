@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import app.izhang.filmfriend.R;
-import app.izhang.filmfriend.Util.LocationUtil;
 
 /**
  * Created by ivanzhang on 4/3/18.
@@ -12,6 +11,7 @@ import app.izhang.filmfriend.Util.LocationUtil;
 
 public class SharedPreferenceManager {
     public static String POSTAL_CODE_KEY = "postal_code";
+    public static String USERNAME_KEY = "username_key";
 
     private SharedPreferences mSharedPreferences;
 
@@ -27,6 +27,16 @@ public class SharedPreferenceManager {
 
     public String getZipCodeFromPref(){
         return (mSharedPreferences.getString(POSTAL_CODE_KEY, ""));
+    }
+
+    public void saveUsernameToPref(String username){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(USERNAME_KEY, username);
+        editor.commit();
+    }
+
+    public String getUsernameFromPref(){
+        return (mSharedPreferences.getString(USERNAME_KEY, ""));
     }
 
 }

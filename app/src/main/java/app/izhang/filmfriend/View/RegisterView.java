@@ -16,7 +16,6 @@ import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.Base.BaseLoginView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class RegisterView extends AppCompatActivity implements BaseLoginView {
 
@@ -78,7 +77,6 @@ public class RegisterView extends AppCompatActivity implements BaseLoginView {
     @Override
     public void onSuccess() {
         // TODO: 3/11/18 Change this to finish instead of launching the new intent
-        // finish();
         Intent homeViewIntent = new Intent(getApplicationContext(), HomeView.class);
         startActivity(homeViewIntent);
         finish();

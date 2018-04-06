@@ -1,7 +1,6 @@
 package app.izhang.filmfriend.View;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,14 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.Model.Movie;
 import app.izhang.filmfriend.R;
-import app.izhang.filmfriend.View.Adapter.HomeMovieViewAdapter;
 import app.izhang.filmfriend.View.Adapter.SavedViewAdapter;
 
 /**

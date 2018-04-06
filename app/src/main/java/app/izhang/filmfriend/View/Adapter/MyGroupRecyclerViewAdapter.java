@@ -12,8 +12,9 @@ import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.View.GroupDetailView;
 import app.izhang.filmfriend.View.dummy.DummyContent.DummyItem;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,16 +76,15 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
-        public final TextView mGroupTitle;
-        public final TextView mGroupLastMessage;
+        @BindView(R.id.tv_movie_title) TextView mGroupTitle;
+        @BindView(R.id.tv_group_lastmsg) TextView mGroupLastMessage;
         private final Context vhContext;
         public Group mGroup;
 
         public ViewHolder(View view,Context context){
             super(view);
+            ButterKnife.bind(this, view);
             mView = view;
-            mGroupTitle =  view.findViewById(R.id.tv_movie_title);
-            mGroupLastMessage = view.findViewById(R.id.tv_group_lastmsg);
             vhContext = context;
             view.setOnClickListener(this);
         }

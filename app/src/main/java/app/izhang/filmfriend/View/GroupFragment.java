@@ -24,10 +24,8 @@ import java.util.ArrayList;
 
 import app.izhang.filmfriend.Model.Group;
 import app.izhang.filmfriend.Presenter.GroupPresenter;
-import app.izhang.filmfriend.Presenter.LoginPresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.EndlessScrollListener;
-import app.izhang.filmfriend.Util.NetworkUtil;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;
@@ -125,18 +123,6 @@ public class GroupFragment extends Fragment implements BaseDataView {
         return view;
     }
 
-
-    // TODO: 3/4/18 Remove this after confirming the data shows
-    public ArrayList getDummyData(){
-        ArrayList list = new ArrayList();
-        Group group1 = new Group("Title 1", null, "Ivan", "1");
-        Group group2 = new Group("Title 2", null, "Ivan", "2");
-
-        list.add(group1);
-        list.add(group2);
-
-        return list;
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

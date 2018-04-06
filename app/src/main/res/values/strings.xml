@@ -35,7 +35,6 @@
     <string name="movie_rating_label">"Average Vote: "</string>
 
     <!-- Preference file keys -->
-    <string name="username_pref_key">username_key</string>
     <string name="pref_file_key">file_key</string>
 
 
