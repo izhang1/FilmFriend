@@ -1,5 +1,7 @@
 package app.izhang.filmfriend.Presenter;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -46,14 +48,22 @@ public class GroupPresenter {
         }
 
         // Setting a new random ID as the group ID
-        mUser = FirebaseService.getInstance().getUserInfo();
-        UUID uuid = UUID.randomUUID();
-        Group group = new Group(title, null, mUser.getUid(), uuid.toString());
-        group.setZipcode(zipCode);
-        firebaseService.createGroup(group);
+        if(FirebaseService.getInstance().userIsSignedIn()){
+            mUser = FirebaseService.getInstance().getUserInfo();
+            UUID uuid = UUID.randomUUID();
+            Group group = new Group(title, null, mUser.getUid(), uuid.toString());
+            group.setZipcode(zipCode);
+            Log.v("AddNewGroup", "calling Firebase Service to add group");
+            firebaseService.createGroup(group);
 
-        // Callback to the view
-        mView.showAddedGroup(group);
+            // Callback to the view
+            mView.showAddedGroup(group);
+        }else{
+
+        }
+
+
+
     }
 
     // Each pageNum = 40 groups

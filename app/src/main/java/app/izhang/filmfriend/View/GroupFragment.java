@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import app.izhang.filmfriend.Model.Group;
+import app.izhang.filmfriend.Model.SharedPreferenceManager;
 import app.izhang.filmfriend.Presenter.GroupPresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.EndlessScrollListener;
@@ -51,6 +52,8 @@ public class GroupFragment extends Fragment implements BaseDataView {
     @BindView(R.id.group_rv) RecyclerView mGroupRV;
     @BindView(R.id.fab) FloatingActionButton addGroupFAB;
     @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+    private MenuItem mLocToggleMenu;
+    private boolean locationIsEnabled = false;
 
     private LinearLayoutManager mGroupLayoutManager;
     private GroupPresenter mGroupPresenter;
@@ -128,14 +131,40 @@ public class GroupFragment extends Fragment implements BaseDataView {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.group_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+
+        mLocToggleMenu = menu.findItem(R.id.nearme);
+        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(getContext());
+        locationIsEnabled = sharedPreferenceManager.getEnableLocationValueFromPref();
+        mLocToggleMenu.setChecked(locationIsEnabled);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.nearme:
+                SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(getContext());
+                sharedPreferenceManager.toggleEnableLocationInPref();
+                locationIsEnabled = sharedPreferenceManager.getEnableLocationValueFromPref();
+                mLocToggleMenu.setChecked(locationIsEnabled);
+                locationEnablingToggled();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     /** DATA METHODS **/
+
+    public void locationEnablingToggled(){
+        if(locationIsEnabled){
+            // TODO Show new data based on the location of user
+            Toast.makeText(getContext(), "Location is enabled", Toast.LENGTH_LONG).show();
+
+        }else{
+            // TODO Show group data without location enabled
+            Toast.makeText(getContext(), "Location is NOT enabled", Toast.LENGTH_LONG).show();
+
+        }
+    }
 
     public void showAddedGroup(Group group){
         mGroupRecyclerViewAdapter.addNewGroupData(group);
@@ -143,8 +172,6 @@ public class GroupFragment extends Fragment implements BaseDataView {
     }
 
     public void addNewGroup(){
-        // TODO Show alert dialog to ask user whether they want to utilize their location and add a name
-        // TODO Create the new group and start a new intent for the user, requery for the group data list as well
         Toast.makeText(getContext(), "Making new group", Toast.LENGTH_SHORT).show();
         mGroupPresenter.checkIfLoggedIn();
     }

@@ -12,6 +12,7 @@ import app.izhang.filmfriend.R;
 public class SharedPreferenceManager {
     public static String POSTAL_CODE_KEY = "postal_code";
     public static String USERNAME_KEY = "username_key";
+    private static String ENABLE_LOCATION_KEY = "enable_location";
 
     private SharedPreferences mSharedPreferences;
 
@@ -37,6 +38,16 @@ public class SharedPreferenceManager {
 
     public String getUsernameFromPref(){
         return (mSharedPreferences.getString(USERNAME_KEY, ""));
+    }
+
+    public void toggleEnableLocationInPref(){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(ENABLE_LOCATION_KEY, !getEnableLocationValueFromPref());
+        editor.commit();
+    }
+
+    public boolean getEnableLocationValueFromPref(){
+        return (mSharedPreferences.getBoolean(ENABLE_LOCATION_KEY, false));
     }
 
 }

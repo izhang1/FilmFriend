@@ -56,7 +56,7 @@ public class FirebaseService {
         return instance;
     }
 
-
+    // TODO: 4/8/18 This reverts back to null after some time
     public boolean userIsSignedIn(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -85,7 +85,6 @@ public class FirebaseService {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    FirebaseUser user = mAuth.getCurrentUser();
                     loginPresenter.onResult(true);
                 }else{
                     loginPresenter.onResult(false);
@@ -123,6 +122,8 @@ public class FirebaseService {
      * Create Group method. Creates a new group entry in the Firebase realtime database system.
      */
     public boolean createGroup(Group group){
+        Log.v("createGroup", "calling Firebase Service to add group");
+
         DatabaseReference groupRef = database.getReference(FB_GROUP).child(group.getId());
 
         groupRef.child(GROUP_TITLE).setValue(group.getTitle());
