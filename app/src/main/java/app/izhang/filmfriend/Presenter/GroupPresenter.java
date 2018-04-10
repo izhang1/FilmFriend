@@ -62,8 +62,6 @@ public class GroupPresenter {
 
         }
 
-
-
     }
 
     // Each pageNum = 40 groups

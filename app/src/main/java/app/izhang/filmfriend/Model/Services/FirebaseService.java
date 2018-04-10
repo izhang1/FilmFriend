@@ -56,7 +56,7 @@ public class FirebaseService {
         return instance;
     }
 
-    // TODO: 4/8/18 This reverts back to null after some time
+    // TODO: BUG 4/8/18 This reverts back to null after some time
     public boolean userIsSignedIn(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
