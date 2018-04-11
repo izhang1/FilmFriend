@@ -170,15 +170,10 @@ public class GroupFragment extends Fragment implements BaseDataView {
     // Method that reacts to using location within the groups or not
     public void locationEnablingToggled(){
         if(locationIsEnabled){
-            // TODO Show new data based on the location of user
             Toast.makeText(getContext(), "Location is enabled", Toast.LENGTH_LONG).show();
-            if(myGroupLocRecyclerViewAdapter.mValues == null){
-                getLocationData();
-            }else{
-                mGroupRV.setAdapter(myGroupLocRecyclerViewAdapter);
-            }
+            myGroupLocRecyclerViewAdapter.mValues = null; // reset data
+            getLocationData();
         }else{
-            // TODO Show group data without location enabled
             Toast.makeText(getContext(), "Location is NOT enabled", Toast.LENGTH_LONG).show();
             if(mGroupRecyclerViewAdapter.mValues == null){
                 mGroupRV.addOnScrollListener(scrollListener);
@@ -191,11 +186,7 @@ public class GroupFragment extends Fragment implements BaseDataView {
     }
 
     public void getLocationData(){
-        ArrayList<Group> groups = new ArrayList<>();
-        groups.add(new Group("test2", null, "ownertest", "idtest"));
-        groups.add(new Group("test3", null, "ownertest", "idtest"));
-        groups.add(new Group("test4", null, "ownertest", "idtest"));
-        getLocDataSuccess(groups);
+        mGroupPresenter.getGroupsLoc();
     }
 
     public void getLocDataSuccess(ArrayList groups){
@@ -205,8 +196,14 @@ public class GroupFragment extends Fragment implements BaseDataView {
     }
 
     public void showAddedGroup(Group group){
-        mGroupRecyclerViewAdapter.addNewGroupData(group);
-        mGroupRecyclerViewAdapter.notifyDataSetChanged();
+        if(locationIsEnabled){
+            myGroupLocRecyclerViewAdapter.addNewGroupData(group);
+            myGroupLocRecyclerViewAdapter.notifyDataSetChanged();
+        }else{
+            mGroupRecyclerViewAdapter.addNewGroupData(group);
+            mGroupRecyclerViewAdapter.notifyDataSetChanged();
+        }
+
     }
 
     public void addNewGroup(){

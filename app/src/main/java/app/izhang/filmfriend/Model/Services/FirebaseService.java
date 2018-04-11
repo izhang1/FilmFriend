@@ -190,6 +190,40 @@ public class FirebaseService {
     }
 
     /**
+     * Get Group method. Creates a new group entry in the Firebase realtime database system.
+     */
+    public void getGroupsWithZip(final ArrayList<String> zipcodes, final GroupPresenter groupPresenter){
+        DatabaseReference groupRef = database.getReference(FB_GROUP_LOC);
+
+        groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList groups = new ArrayList();
+                for(String zip: zipcodes){
+                    if(dataSnapshot.hasChild(zip)){
+                        for(DataSnapshot childSnapshot : dataSnapshot.child(zip).getChildren()){
+                            Group group = childSnapshot.getValue(Group.class);
+                            groups.add(group);
+                        }
+                    }
+                }
+                Log.v("FirebaseService", "Calling getGroupsResults(groups)");
+                groupPresenter.getGroupsLocResults(groups);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.v("FirebaseService", "onCancelled");
+                Log.v("FirebaseService", "Error: " + databaseError.getDetails());
+                Log.v("FirebaseService", "Error: " + databaseError.getMessage());
+
+                groupPresenter.getGroupsLocResults(null);
+            }
+        });
+
+    }
+
+    /**
      * Search Group method. Returns a list of Groups with the search term.
      */
     public void searchGroup(final String searchTerm, final GroupPresenter groupPresenter){
