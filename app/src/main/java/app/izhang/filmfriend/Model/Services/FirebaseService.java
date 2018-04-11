@@ -152,9 +152,11 @@ public class FirebaseService {
         DatabaseReference groupRef = database.getReference(FB_GROUP);
         final int initialCount = (pageNum - 1) * 20;
         final int lastCount = (pageNum * 20) - 1;
+
         groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("FirebaseService", "On data changed called");
 
                 // Return if the children count is less than the initial count
                 if(dataSnapshot.getChildrenCount() <= initialCount){
@@ -169,9 +171,10 @@ public class FirebaseService {
                         Group group = childSnapshot.getValue(Group.class);
                         groups.add(group);
                     }
-                    matchStartingCount ++;
+                    matchStartingCount++;
 
                 }
+                Log.v("FirebaseService", "Calling getGroupsResults(groups)");
                 groupPresenter.getGroupsResults(groups);
             }
 

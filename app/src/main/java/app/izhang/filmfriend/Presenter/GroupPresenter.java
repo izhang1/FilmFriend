@@ -67,6 +67,7 @@ public class GroupPresenter {
     // Each pageNum = 40 groups
     public void getGroups(int pageNum){
         mView.showLoadingState(true);
+        firebaseService.userIsSignedIn();
         firebaseService.getGroups(pageNum, this);
     }
 

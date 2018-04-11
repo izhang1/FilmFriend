@@ -27,6 +27,7 @@ import app.izhang.filmfriend.Model.SharedPreferenceManager;
 import app.izhang.filmfriend.Presenter.GroupPresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.EndlessScrollListener;
+import app.izhang.filmfriend.View.Adapter.MyGroupLocRecyclerViewAdapter;
 import app.izhang.filmfriend.View.Adapter.MyGroupRecyclerViewAdapter;
 import app.izhang.filmfriend.View.Base.BaseDataView;
 import butterknife.BindView;
@@ -58,6 +59,7 @@ public class GroupFragment extends Fragment implements BaseDataView {
     private LinearLayoutManager mGroupLayoutManager;
     private GroupPresenter mGroupPresenter;
     private MyGroupRecyclerViewAdapter mGroupRecyclerViewAdapter;
+    private MyGroupLocRecyclerViewAdapter myGroupLocRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -101,17 +103,9 @@ public class GroupFragment extends Fragment implements BaseDataView {
         mGroupLayoutManager = new LinearLayoutManager(context);
         mGroupRV.setLayoutManager(mGroupLayoutManager);
 
+        // Setting the location adapter
         mGroupRecyclerViewAdapter = new MyGroupRecyclerViewAdapter(getContext(), null);
-        mGroupRV.setAdapter(mGroupRecyclerViewAdapter);
-
-        getData(pageNum);
-
-        addGroupFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addNewGroup();
-            }
-        });
+        myGroupLocRecyclerViewAdapter = new MyGroupLocRecyclerViewAdapter(getContext(), null);
 
         // Scroll Listener
         scrollListener = new EndlessScrollListener(mGroupLayoutManager) {
@@ -121,7 +115,27 @@ public class GroupFragment extends Fragment implements BaseDataView {
             }
         };
 
-        mGroupRV.addOnScrollListener(scrollListener);
+        // Finding the current state of locations
+        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(getContext());
+        locationIsEnabled = sharedPreferenceManager.getEnableLocationValueFromPref();
+
+        if(locationIsEnabled){
+            mGroupRV.setAdapter(myGroupLocRecyclerViewAdapter);
+            getLocationData();
+        }else{
+            mGroupRV.setAdapter(mGroupRecyclerViewAdapter);
+            getData(pageNum);
+            mGroupRV.addOnScrollListener(scrollListener);
+        }
+
+
+        addGroupFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewGroup();
+            }
+        });
+
 
         return view;
     }
@@ -133,8 +147,7 @@ public class GroupFragment extends Fragment implements BaseDataView {
         super.onCreateOptionsMenu(menu, inflater);
 
         mLocToggleMenu = menu.findItem(R.id.nearme);
-        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(getContext());
-        locationIsEnabled = sharedPreferenceManager.getEnableLocationValueFromPref();
+
         mLocToggleMenu.setChecked(locationIsEnabled);
 
     }
@@ -154,16 +167,41 @@ public class GroupFragment extends Fragment implements BaseDataView {
 
     /** DATA METHODS **/
 
+    // Method that reacts to using location within the groups or not
     public void locationEnablingToggled(){
         if(locationIsEnabled){
             // TODO Show new data based on the location of user
             Toast.makeText(getContext(), "Location is enabled", Toast.LENGTH_LONG).show();
-
+            if(myGroupLocRecyclerViewAdapter.mValues == null){
+                getLocationData();
+            }else{
+                mGroupRV.setAdapter(myGroupLocRecyclerViewAdapter);
+            }
         }else{
             // TODO Show group data without location enabled
             Toast.makeText(getContext(), "Location is NOT enabled", Toast.LENGTH_LONG).show();
-
+            if(mGroupRecyclerViewAdapter.mValues == null){
+                mGroupRV.addOnScrollListener(scrollListener);
+                getData(pageNum);
+            }else{
+                mGroupRV.addOnScrollListener(scrollListener);
+                mGroupRV.setAdapter(mGroupRecyclerViewAdapter);
+            }
         }
+    }
+
+    public void getLocationData(){
+        ArrayList<Group> groups = new ArrayList<>();
+        groups.add(new Group("test2", null, "ownertest", "idtest"));
+        groups.add(new Group("test3", null, "ownertest", "idtest"));
+        groups.add(new Group("test4", null, "ownertest", "idtest"));
+        getLocDataSuccess(groups);
+    }
+
+    public void getLocDataSuccess(ArrayList groups){
+        myGroupLocRecyclerViewAdapter.addData(groups);
+        mGroupRV.setAdapter(myGroupLocRecyclerViewAdapter);
+        mGroupRV.removeOnScrollListener(scrollListener);
     }
 
     public void showAddedGroup(Group group){

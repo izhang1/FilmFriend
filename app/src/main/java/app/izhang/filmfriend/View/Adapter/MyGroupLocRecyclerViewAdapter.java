@@ -8,26 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import app.izhang.filmfriend.Model.Group;
-import app.izhang.filmfriend.R;
-import app.izhang.filmfriend.View.GroupDetailView;
-import app.izhang.filmfriend.View.dummy.DummyContent.DummyItem;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import app.izhang.filmfriend.Model.Group;
+import app.izhang.filmfriend.R;
+import app.izhang.filmfriend.View.GroupDetailView;
+import app.izhang.filmfriend.View.dummy.DummyContent;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link DummyContent.DummyItem} and makes a call to the
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecyclerViewAdapter.ViewHolder> {
+public class MyGroupLocRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupLocRecyclerViewAdapter.ViewHolder> {
 
     public List<Group> mValues;
     private final Context mContext;
 
-    public MyGroupRecyclerViewAdapter(Context context, List<Group> items) {
+    public MyGroupLocRecyclerViewAdapter(Context context, List<Group> items) {
         mContext = context;
         mValues = items;
     }
@@ -43,7 +43,7 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mGroup = mValues.get(position);
         holder.mGroupTitle.setText(mValues.get(position).getTitle());
-        // TODO: 4/1/18 Pull the last message and display it 
+        // TODO: 4/1/18 Pull the last message and display it
         //holder.mGroupLastMessage.setText(mValues.get(position).getMessages());
     }
 
@@ -76,7 +76,8 @@ public class MyGroupRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupRecy
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
-        @BindView(R.id.tv_movie_title) TextView mGroupTitle;
+        @BindView(R.id.tv_movie_title)
+        TextView mGroupTitle;
         @BindView(R.id.tv_group_lastmsg) TextView mGroupLastMessage;
         private final Context vhContext;
         public Group mGroup;
