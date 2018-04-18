@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import app.izhang.filmfriend.Model.Movie;
+import app.izhang.filmfriend.Presenter.HomePresenter;
 import app.izhang.filmfriend.R;
 import app.izhang.filmfriend.Util.PosterPathUtil;
 import app.izhang.filmfriend.View.MovieDetailView;
@@ -28,10 +30,12 @@ import butterknife.ButterKnife;
 public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdapter.ViewHolder>{
     private ArrayList<Movie> mValues;
     private Context mContext;
+    private HomePresenter mPresenter;
 
-    public HomeMovieViewAdapter(Context context, ArrayList<Movie> items) {
+    public HomeMovieViewAdapter(Context context, ArrayList<Movie> items, HomePresenter homePresenter) {
         mContext = context;
         mValues = items;
+        mPresenter = homePresenter;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
 
     @Override
     public void onBindViewHolder(final HomeMovieViewAdapter.ViewHolder movieHolder, int position) {
-        Movie tempMovie = mValues.get(position);
+        final Movie tempMovie = mValues.get(position);
         String posterPath = PosterPathUtil.buildPosterURL(tempMovie.getPoster_path());
         Glide.with(movieHolder.mView)
                 .load(posterPath)
@@ -51,6 +55,12 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
 
         movieHolder.mMovieTitle.setText(tempMovie.getTitle());
         movieHolder.mMovieRating.setText(mContext.getString(R.string.movie_rating_label) + tempMovie.getVote_average());
+        movieHolder.mfavBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.saveMovieId(tempMovie.getId(), mContext);
+            }
+        });
     }
 
     @Override
@@ -73,6 +83,7 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
         @BindView(R.id.tv_movie_title) public TextView mMovieTitle;
         @BindView(R.id.tv_rating) public TextView mMovieRating;
         @BindView(R.id.iv_movie_poster) public ImageView mMoviePoster;
+        @BindView(R.id.btn_favorite) public ImageButton mfavBtn;
         private final Context vhContext;
 
         public ViewHolder(View view, Context context) {
@@ -81,6 +92,7 @@ public class HomeMovieViewAdapter extends RecyclerView.Adapter<HomeMovieViewAdap
             mView = view;
             vhContext = context;
             view.setOnClickListener(this);
+
         }
 
         @Override

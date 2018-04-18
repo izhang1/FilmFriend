@@ -1,9 +1,14 @@
 package app.izhang.filmfriend.Presenter;
 
+import android.content.Context;
+import android.view.View;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import app.izhang.filmfriend.Model.Movie;
+import app.izhang.filmfriend.Model.Services.FirebaseService;
 import app.izhang.filmfriend.Model.Services.MovieJsonResponse;
 import app.izhang.filmfriend.Util.NetworkUtil;
 import app.izhang.filmfriend.Model.Services.TheMovieDBService;
@@ -56,5 +61,14 @@ public class HomePresenter {
             mView.getDataFailure();
         }
         mView.showLoadingState(false);
+    }
+
+    public void saveMovieId(String movieId, Context context) {
+        FirebaseService firebaseService = FirebaseService.getInstance();
+        if(firebaseService.userIsSignedIn()){
+            firebaseService.saveMovieToAccount(movieId, firebaseService.getUserInfo().getUid());
+        }else{
+            Toast.makeText(context, "This feature requires the account to be logged in", Toast.LENGTH_SHORT).show();
+        }
     }
 }
