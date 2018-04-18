@@ -66,6 +66,9 @@ public class GroupPresenter {
             Log.v("AddNewGroup", "calling Firebase Service to add group");
             firebaseService.createGroup(group);
 
+            // Save group to user account since they created it (assume user  will favorite it)
+            firebaseService.saveGroupToAccount(group.getId(), mUser.getUid());
+
             // Callback to the view
             mView.showAddedGroup(group);
         }else{

@@ -128,7 +128,6 @@ public class GroupFragment extends Fragment implements BaseDataView {
             mGroupRV.addOnScrollListener(scrollListener);
         }
 
-
         addGroupFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

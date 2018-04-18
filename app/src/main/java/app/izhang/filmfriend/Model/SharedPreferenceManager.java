@@ -3,6 +3,8 @@ package app.izhang.filmfriend.Model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Set;
+
 import app.izhang.filmfriend.R;
 
 /**
